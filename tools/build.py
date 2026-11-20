@@ -323,7 +323,7 @@ Created:  20/11/2026
 <meta name="theme-color" content="#1e4a57">
 <link rel="alternate" hreflang="es" href="https://oxdabit.github.io/toc/">
 <link rel="alternate" hreflang="en" href="https://oxdabit.github.io/toc/en/">
-<link rel="icon" href="{p}assets/oxdabit.svg" type="image/svg+xml">
+<link rel="icon" href="{p}assets/toc.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&family=Sometype+Mono:wght@500&display=swap">
@@ -336,7 +336,7 @@ Created:  20/11/2026
 <header class="hero">
   <div class="hero-tiles" aria-hidden="true"><i></i><i></i><i></i></div>
   <nav class="top" aria-label="toc">
-    <a class="wordmark" href="{p if p else "./"}">toc</a>
+    <a class="wordmark" href="{p if p else "./"}"><img src="{p}assets/toc.svg" alt="" width="36" height="36">toc</a>
     <ul>
       <li><a href="#atajos">{t["nav_shortcuts"]}</a></li>
       <li><a href="#arrastrar">{t["nav_drag"]}</a></li>

@@ -145,11 +145,15 @@ kbd {
   padding: 20px 0;
 }
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 800;
   font-size: 1.6rem;
   letter-spacing: -0.04em;
   text-decoration: none;
 }
+.wordmark img { display: block; width: 36px; height: 36px; margin: -4px 0 -4px -4px; border-radius: 22%; box-shadow: 0 0 0 1.5px rgba(239, 235, 228, 0.35); }
 .top ul {
   display: flex;
   flex-wrap: wrap;
