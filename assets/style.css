@@ -1,8 +1,8 @@
 /*
 -------------------------------------------------------------------------------
 Name:     assets/style.css
-Purpose:  Estilos de la web de toc. Idea: la portada en azul cianotipo de
-          0xDA bit, organizada como un escritorio con ventanas en mosaico;
+Purpose:  Estilos de la web de toc. Idea: la portada en azul petróleo,
+          organizada como un escritorio con ventanas en mosaico;
           el resto de la página es papel claro (u oscuro, según el sistema).
 Version:  v0.0.1
 Author:   David Alvarez Medina aka 0xDA_bit
@@ -12,7 +12,9 @@ Created:  20/11/2026
 
 :root {
   /* Paleta de 0xDA bit */
-  --cyan: #1c3f6e;          /* azul cianotipo: el plano */
+  --cyan: #1c3f6e;          /* azul cianotipo de 0xDA bit */
+  --petrol: #1e4a57;        /* azul petróleo: el color propio de toc */
+  --petrol-light: #84b8c4;  /* petróleo claro para fondos oscuros */
   --paper: #efebe4;         /* blanco roto */
   --vanilla: #f3e5ab;       /* vainilla: lo que se coloca */
   --ink: #1a2230;
@@ -24,8 +26,9 @@ Created:  20/11/2026
   --muted: #4c5669;
   --rule: #d6cfc2;
   --surface: #f6f3ee;
-  --zone: var(--cyan);
-  --link: var(--cyan);
+  --zone: var(--petrol);
+  --link: var(--petrol);
+  --heading: var(--petrol);
 
   --font: "Epilogue", ui-sans-serif, system-ui, sans-serif;
   --mono: "Sometype Mono", ui-monospace, "SF Mono", monospace;
@@ -36,13 +39,14 @@ Created:  20/11/2026
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f2240;
+    --bg: #0d2a32;
     --text: var(--paper);
     --muted: #a8b4c8;
-    --rule: #26406a;
-    --surface: #142b4f;
-    --zone: var(--sky);
-    --link: #9cbcec;
+    --rule: #24505c;
+    --surface: #123741;
+    --zone: var(--petrol-light);
+    --heading: var(--petrol-light);
+    --link: #a3d0da;
   }
 }
 
@@ -105,7 +109,7 @@ kbd {
   position: relative;
   overflow: hidden;
   color: var(--paper);
-  background-color: var(--cyan);
+  background-color: var(--petrol);
   padding: 0 var(--gutter) clamp(48px, 8vw, 96px);
 }
 .hero > :not(.hero-tiles) { position: relative; z-index: 1; }
@@ -200,51 +204,98 @@ h1 {
 .button.primary:hover { background: #f8eec7; }
 .button.ghost { color: inherit; }
 .button.ghost:hover { background: rgba(239, 235, 228, 0.1); }
-main .button.primary { background: var(--cyan); color: var(--paper); border-color: var(--cyan); }
+main .button.primary { background: var(--petrol); color: var(--paper); border-color: var(--petrol); }
 @media (prefers-color-scheme: dark) {
   main .button.primary { background: var(--vanilla); color: var(--ink); border-color: var(--vanilla); }
 }
 
-/* ---------- Demo: una pantalla dibujada en el plano ---------- */
+/* ---------- Demo: una pantalla de Mac en miniatura ---------- */
 
 .demo { margin: 0; }
 
+.demo-display { position: relative; }
 .demo-screen {
   position: relative;
   aspect-ratio: 43 / 18;          /* la proporción de un monitor ultrapanorámico */
-  border: 2px solid var(--paper);
-  border-radius: 14px;
+  border: clamp(5px, 0.8vw, 9px) solid #0b0d10;
+  border-radius: clamp(10px, 1.4vw, 16px);
   overflow: hidden;
-  background: rgba(18, 41, 74, 0.55);
+  /* Fondo de escritorio con la paleta de 0xDA bit */
+  background:
+    radial-gradient(60% 90% at 85% 110%, rgba(243, 229, 171, 0.55), transparent 60%),
+    radial-gradient(70% 90% at 10% -10%, rgba(132, 184, 196, 0.55), transparent 60%),
+    linear-gradient(160deg, #2b6070 0%, var(--cyan) 100%);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   touch-action: none;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font);
 }
+/* Pie del monitor */
+.demo-stand {
+  width: 18%;
+  height: clamp(14px, 2.4vw, 28px);
+  margin: 0 auto;
+  background: linear-gradient(#8a919a, #c3c8ce 40%, #9aa1a9);
+  clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%);
+}
+
 .demo-menubar {
+  position: absolute;
+  inset: 0 0 auto 0;
   height: 7%;
   min-height: 14px;
-  border-bottom: 1px solid rgba(239, 235, 228, 0.35);
-  padding: 0 2%;
+  padding: 0 1.4%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  font: 700 clamp(0.55rem, 1.2vw, 0.75rem)/1 var(--font);
-  opacity: 0.8;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #11161d;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  font-size: clamp(0.5rem, 0.95vw, 0.72rem);
+  z-index: 2;
 }
+.mb-left, .mb-right { display: flex; align-items: center; gap: 1.1em; white-space: nowrap; }
+.mb-left b { font-weight: 700; }
+.mb-right .icon { width: 1.9em; height: auto; }
+.mb-right .i-zone { fill: #11161d; }
+.mb-right .i-frame { stroke: #11161d; }
+.mb-right .i-bg { opacity: 0.15; }
+
 .demo-area {
   position: absolute;
   top: 7%;
-  bottom: 9%;
+  bottom: 12%;
   left: 0;
   right: 0;
 }
+
 .demo-dock {
   position: absolute;
-  bottom: 1.5%;
-  left: 35%;
-  right: 35%;
-  height: 6%;
-  border: 1px solid rgba(239, 235, 228, 0.45);
-  border-radius: 6px;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 8.5%;
+  padding: 0.6% 0.8%;
+  display: flex;
+  gap: clamp(3px, 0.5vw, 6px);
+  border-radius: clamp(6px, 1vw, 12px);
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
+.demo-dock i {
+  aspect-ratio: 1;
+  height: 100%;
+  border-radius: 24%;
+  background: var(--paper);
+}
+.demo-dock i:nth-child(1) { background: linear-gradient(#5ac8fa, #1e88e5); }
+.demo-dock i:nth-child(2) { background: linear-gradient(#f3e5ab, #e8cf6a); }
+.demo-dock i:nth-child(3) { background: linear-gradient(#84b8c4, var(--petrol)); }
+.demo-dock i:nth-child(4) { background: linear-gradient(#2d2f33, #0b0d10); }
+.demo-dock i:nth-child(5) { background: linear-gradient(#f5f5f7, #d2d2d7); }
 
 .demo-window,
 .demo-footprint {
@@ -256,54 +307,91 @@ main .button.primary { background: var(--cyan); color: var(--paper); border-colo
 }
 .demo-window {
   --x: 0.32; --y: 0.16; --w: 0.36; --h: 0.6;
-  padding: 3px;
-  border-radius: 8px;
-  background: var(--vanilla);
-  color: var(--ink);
-  box-shadow: 0 0 0 1px rgba(26, 34, 48, 0.25);
+  display: flex;
+  flex-direction: column;
+  border-radius: clamp(6px, 0.9vw, 10px);
+  background: #fbfaf7;
+  color: #1d1d1f;
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.35),
+    0 12px 32px -8px rgba(0, 0, 0, 0.45);
   transition: left 260ms var(--ease), top 260ms var(--ease), width 260ms var(--ease), height 260ms var(--ease);
-  cursor: default;
   overflow: hidden;
 }
 .demo-window.dragging { transition: none; }
-.demo-window:focus-visible { outline-color: var(--paper); }
+.demo-window:focus-visible { outline-color: var(--vanilla); }
 
 .demo-titlebar {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 2px 6px 4px;
-  font: 700 clamp(0.6rem, 1.1vw, 0.78rem)/1.2 var(--font);
+  justify-content: center;
+  flex: none;
+  height: clamp(16px, 2.4vw, 26px);
+  background: #f0eee9;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.12);
+  font-size: clamp(0.5rem, 0.95vw, 0.72rem);
+  font-weight: 600;
+  color: #3a3a3c;
   cursor: grab;
   user-select: none;
 }
 .dragging .demo-titlebar { cursor: grabbing; }
-.lights { display: inline-flex; gap: 4px; }
-.lights i {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  border: 1px solid rgba(26, 34, 48, 0.55);
+.lights {
+  position: absolute;
+  left: 8px;
+  display: inline-flex;
+  gap: clamp(3px, 0.45vw, 6px);
 }
-.demo-lines { padding: 6px 8px; }
+.lights i {
+  width: clamp(6px, 0.8vw, 10px);
+  height: clamp(6px, 0.8vw, 10px);
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.2);
+}
+.lights i:nth-child(2) { background: #febc2e; }
+.lights i:nth-child(3) { background: #28c840; }
+
+.demo-body { flex: 1; display: flex; min-height: 0; }
+.demo-sidebar {
+  width: 26%;
+  max-width: 120px;
+  background: #f3e5ab;
+  border-right: 0.5px solid rgba(0, 0, 0, 0.08);
+  padding: 6% 4%;
+}
+.demo-sidebar i {
+  display: block;
+  height: clamp(3px, 0.5vw, 6px);
+  margin-bottom: clamp(4px, 0.6vw, 8px);
+  border-radius: 3px;
+  background: rgba(30, 74, 87, 0.28);
+}
+.demo-sidebar i:first-child { background: rgba(30, 74, 87, 0.6); width: 70%; }
+.demo-lines { flex: 1; padding: 4% 5%; }
 .demo-lines i {
   display: block;
-  height: 5px;
-  margin: 0 0 7px;
+  height: clamp(3px, 0.5vw, 6px);
+  margin: 0 0 clamp(5px, 0.7vw, 9px);
   border-radius: 3px;
-  background: rgba(28, 63, 110, 0.22);
+  background: #e2e0da;
 }
-.demo-lines i:nth-child(2) { width: 82%; }
-.demo-lines i:nth-child(3) { width: 64%; }
-.demo-lines i:nth-child(4) { width: 72%; }
+.demo-lines i:first-child { width: 45%; height: clamp(5px, 0.8vw, 9px); background: #c9c6be; }
+.demo-lines i:nth-child(3) { width: 82%; }
+.demo-lines i:nth-child(4) { width: 64%; }
+.demo-lines i:nth-child(5) { width: 72%; }
 
 .demo-footprint {
-  border: 2px dashed var(--vanilla);
-  border-radius: 10px;
-  background: rgba(243, 229, 171, 0.16);
+  border-radius: clamp(6px, 0.9vw, 10px);
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   pointer-events: none;
 }
 
-.demo figcaption { margin-top: 1rem; }
+.demo figcaption { margin-top: 1.25rem; }
 .demo-status {
   margin: 0 0 0.75rem;
   font-weight: 700;
@@ -376,6 +464,8 @@ h3 {
 .section-head p { margin: 0; color: var(--muted); font-size: 1.12rem; }
 .note { color: var(--muted); font-size: 0.95rem; max-width: var(--measure); }
 
+main h2, main h3 { color: var(--heading); }
+
 /* Atajos: el menú de toc desplegado en columnas */
 .menu {
   columns: 2 340px;
@@ -407,15 +497,16 @@ h3 {
 }
 .split .section-head { margin-bottom: 0; }
 .zones { margin: 1.75rem 0 0; display: grid; gap: 0.6rem; }
-.zones div { display: flex; gap: 0.75rem; align-items: baseline; flex-wrap: wrap; }
-.zones dt { font-weight: 700; min-width: 9.5em; }
+.zones div { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 0.75rem; align-items: baseline; }
+.zones dt { font-weight: 700; }
+.zones + .note { margin-top: 1.5rem; }
 .zones dd { margin: 0; color: var(--muted); }
 
 .blueprint {
   width: 100%;
   height: auto;
   border-radius: 16px;
-  background: var(--cyan);
+  background: var(--petrol);
 }
 .bp-screen { fill: none; stroke: var(--paper); stroke-width: 2; }
 .bp-band { fill: rgba(243, 229, 171, 0.3); }
@@ -512,7 +603,7 @@ pre {
 @media (max-width: 520px) {
   .steps { grid-template-columns: minmax(0, 1fr); }
   .steps li::after { display: none; }
-  .zones dt { min-width: 0; }
+  .zones div { grid-template-columns: minmax(0, 1fr); gap: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -125,6 +125,7 @@ TEXT = {
         "demo_label": "Demostración de toc",
         "demo_hint": "Pruébalo aquí: pulsa ⌃⌥ y una flecha, usa los botones o arrastra la ventana por su barra.",
         "demo_window": "Notas",
+        "demo_menus": "<span>Archivo</span><span>Edición</span><span>Visualización</span>",
         "demo_ready": "Listo para probar",
         "demo_restore_empty": "No hay ninguna posición anterior",
         "shortcuts_h2": "Veinte posiciones, cada una con su atajo",
@@ -180,6 +181,7 @@ TEXT = {
         "demo_label": "toc demo",
         "demo_hint": "Try it here: press ⌃⌥ and an arrow, use the buttons, or drag the window by its title bar.",
         "demo_window": "Notes",
+        "demo_menus": "<span>File</span><span>Edit</span><span>View</span>",
         "demo_ready": "Ready to try",
         "demo_restore_empty": "There is no previous position",
         "shortcuts_h2": "Twenty positions, each with its shortcut",
@@ -318,7 +320,7 @@ Created:  20/11/2026
 <title>{html.escape(t["title"])}</title>
 <meta name="description" content="{html.escape(t["description"])}">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#1c3f6e">
+<meta name="theme-color" content="#1e4a57">
 <link rel="alternate" hreflang="es" href="https://oxdabit.github.io/toc/">
 <link rel="alternate" hreflang="en" href="https://oxdabit.github.io/toc/en/">
 <link rel="icon" href="{p}assets/oxdabit.svg" type="image/svg+xml">
@@ -356,17 +358,26 @@ Created:  20/11/2026
     </div>
 
     <figure class="demo" data-demo aria-label="{t["demo_label"]}">
-      <div class="demo-screen">
-        <div class="demo-menubar" aria-hidden="true"><span>toc</span></div>
-        <div class="demo-area">
-          <div class="demo-footprint" hidden></div>
-          <div class="demo-window" tabindex="0" role="application" aria-roledescription="{t["demo_window"]}"
-               aria-label="{t["demo_window"]}">
-            <div class="demo-titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>{t["demo_window"]}</div>
-            <div class="demo-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="demo-display">
+        <div class="demo-screen">
+          <div class="demo-menubar" aria-hidden="true">
+            <span class="mb-left"><b>{t["demo_window"]}</b>{t["demo_menus"]}</span>
+            <span class="mb-right">{icon("leftHalf")}<span>9:41</span></span>
           </div>
+          <div class="demo-area">
+            <div class="demo-footprint" hidden></div>
+            <div class="demo-window" tabindex="0" role="application" aria-roledescription="{t["demo_window"]}"
+                 aria-label="{t["demo_window"]}">
+              <div class="demo-titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>{t["demo_window"]}</div>
+              <div class="demo-body" aria-hidden="true">
+                <div class="demo-sidebar"><i></i><i></i><i></i><i></i></div>
+                <div class="demo-lines"><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-dock" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
-        <div class="demo-dock" aria-hidden="true"></div>
+        <div class="demo-stand" aria-hidden="true"></div>
       </div>
       <figcaption>
         <p class="demo-status" aria-live="polite">{t["demo_ready"]}</p>
