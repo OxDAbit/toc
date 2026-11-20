@@ -116,7 +116,7 @@ final class StatusMenuController: NSObject {
         statusDetail.isHidden = true
         switch health {
         case .healthy, .unknown:
-            symbol = "rectangle.split.2x1"
+            symbol = ""
             statusLine.title = health == .healthy ? "Accesibilidad: correcta" : "Accesibilidad: sin comprobar"
         case .broken:
             symbol = "exclamationmark.triangle"
@@ -129,7 +129,10 @@ final class StatusMenuController: NSObject {
             statusDetail.title = "Ajustes del Sistema → Privacidad y seguridad → Accesibilidad"
             statusDetail.isHidden = false
         }
-        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "toc")
+        // En estado normal se muestra el logo de toc; en los avisos, un símbolo del sistema.
+        let image = symbol.isEmpty
+            ? MenuIcon.statusLogo()
+            : NSImage(systemSymbolName: symbol, accessibilityDescription: "toc")
         image?.isTemplate = true
         item.button?.image = image
     }

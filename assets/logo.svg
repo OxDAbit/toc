@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="toc">
+  <defs><linearGradient id="toc-g" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#2b6070"/><stop offset="1" stop-color="#1e4a57"/>
+  </linearGradient></defs>
+  <rect x="50.0" y="50.0" width="412.0" height="412.0" rx="92.0" fill="url(#toc-g)"/>
+  <path d="M158.0 208.0a50.0 50.0 0 0 1 50.0-50.0h48.0v196.0h-48.0a50.0 50.0 0 0 1-50.0-50.0z" fill="#f3e5ab"/>
+  <rect x="158.0" y="158.0" width="196.0" height="196.0" rx="50.0" fill="none" stroke="#efebe4" stroke-width="28.0"/>
+</svg>

@@ -51,6 +51,7 @@ assemble_bundle() {
     mkdir -p "$STAGE/Contents/MacOS" "$STAGE/Contents/Resources"
     cp "$BIN_DIR/toc" "$STAGE/Contents/MacOS/toc"
     cp "$ROOT/Resources/Info.plist" "$STAGE/Contents/Info.plist"
+    cp "$ROOT/Resources/toc.icns" "$STAGE/Contents/Resources/toc.icns"
     plutil -lint "$STAGE/Contents/Info.plist" >/dev/null
     xattr -cr "$STAGE"
 }

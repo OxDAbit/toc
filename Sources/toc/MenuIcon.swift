@@ -108,6 +108,33 @@ enum MenuIcon {
     }
 
     /**
+     * @brief  Crea el logo de toc para la barra de menús, en versión de una tinta.
+     *
+     * Es el monograma de assets/logo-mono.svg: una ventana redondeada con la
+     * mitad izquierda rellena. Se marca como plantilla para que macOS lo
+     * pinte en blanco o negro según la barra de menús.
+     *
+     * @return Imagen de 18 × 18 puntos.
+     */
+    static func statusLogo() -> NSImage {
+        let image = NSImage(size: NSSize(width: 18, height: 18), flipped: true) { rect in
+            let frame = rect.insetBy(dx: 2.6, dy: 2.6)
+            let radius: CGFloat = 3.6
+            let outline = NSBezierPath(roundedRect: frame, xRadius: radius, yRadius: radius)
+            NSColor.black.set()
+            NSGraphicsContext.saveGraphicsState()
+            outline.addClip()
+            CGRect(x: frame.minX, y: frame.minY, width: frame.width / 2, height: frame.height).fill()
+            NSGraphicsContext.restoreGraphicsState()
+            outline.lineWidth = 2
+            outline.stroke()
+            return true
+        }
+        image.accessibilityDescription = "toc"
+        return image
+    }
+
+    /**
      * @brief  Genera hojas de muestra (modo claro y oscuro) con todos los iconos.
      *
      * Se usa con «toc --render-icons <carpeta>» para revisar los iconos sin

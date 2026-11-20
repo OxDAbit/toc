@@ -16,6 +16,8 @@ Created:  20/11/2026
     <string>es</string>
     <key>CFBundleDisplayName</key>
     <string>toc</string>
+    <key>CFBundleIconFile</key>
+    <string>toc</string>
     <key>CFBundleExecutable</key>
     <string>toc</string>
     <key>CFBundleIdentifier</key>
