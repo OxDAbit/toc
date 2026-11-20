@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-------------------------------------------------------------------------------
+Name:     Resources/Info.plist
+Purpose:  Info.plist de toc.app. scripts/build-app.sh lo copia al paquete.
+          LSUIElement oculta toc del Dock (vive en la barra de menús).
+Version:  v0.0.1
+Author:   David Alvarez Medina aka 0xDA_bit
+Created:  20/11/2026
+-------------------------------------------------------------------------------
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>es</string>
+    <key>CFBundleDisplayName</key>
+    <string>toc</string>
+    <key>CFBundleExecutable</key>
+    <string>toc</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.oxdabit.toc</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>toc</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.0.1</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.productivity</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>26.0</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>toc usa Apple Events para mover las ventanas de apps como Finder o Safari cuando macOS pierde el acceso de Accesibilidad tras el reposo.</string>
+</dict>
+</plist>
