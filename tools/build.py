@@ -377,7 +377,6 @@ Created:  20/11/2026
           </div>
           <div class="demo-dock" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
-        <div class="demo-stand" aria-hidden="true"></div>
       </div>
       <figcaption>
         <p class="demo-status" aria-live="polite">{t["demo_ready"]}</p>
@@ -444,7 +443,7 @@ Created:  20/11/2026
 </main>
 
 <footer class="footer">
-  <p class="meta">{html.escape(t["footer_meta"])} <a href="{REPO}">{t["code"]}</a></p>
+  <p class="meta">{html.escape(t["footer_meta"])}<br><a href="{REPO}">{t["code"]}</a></p>
   <a class="brand-mark" href="https://oxdabit.com"><img src="{p}assets/oxdabit.svg" alt="Isotipo de 0xDA bit" width="56" height="56"></a>
   <p class="brand"><b>0xDA</b> bit · <i>Del boceto al plato</i></p>
   <p class="links"><a href="https://oxdabit.com">oxdabit.com</a> · <a href="https://www.youtube.com/@0xDAbitLabs">YouTube</a> · <a href="https://github.com/OxDAbit">GitHub</a> · <a href="https://x.com/0xDA_bit">X</a> · <a href="https://www.instagram.com/oxdabitlabs/">Instagram</a></p>

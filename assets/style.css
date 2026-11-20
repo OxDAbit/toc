@@ -209,7 +209,7 @@ main .button.primary { background: var(--petrol); color: var(--paper); border-co
   main .button.primary { background: var(--vanilla); color: var(--ink); border-color: var(--vanilla); }
 }
 
-/* ---------- Demo: una pantalla de Mac en miniatura ---------- */
+/* ---------- Demo: el contenido de una pantalla de Mac ---------- */
 
 .demo { margin: 0; }
 
@@ -217,27 +217,17 @@ main .button.primary { background: var(--petrol); color: var(--paper); border-co
 .demo-screen {
   position: relative;
   aspect-ratio: 43 / 18;          /* la proporción de un monitor ultrapanorámico */
-  border: clamp(5px, 0.8vw, 9px) solid #0b0d10;
-  border-radius: clamp(10px, 1.4vw, 16px);
+  border: 2px solid var(--paper);
+  border-radius: 14px;
   overflow: hidden;
   /* Fondo de escritorio con la paleta de 0xDA bit */
   background:
     radial-gradient(60% 90% at 85% 110%, rgba(243, 229, 171, 0.55), transparent 60%),
     radial-gradient(70% 90% at 10% -10%, rgba(132, 184, 196, 0.55), transparent 60%),
     linear-gradient(160deg, #2b6070 0%, var(--cyan) 100%);
-  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   touch-action: none;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font);
 }
-/* Pie del monitor */
-.demo-stand {
-  width: 18%;
-  height: clamp(14px, 2.4vw, 28px);
-  margin: 0 auto;
-  background: linear-gradient(#8a919a, #c3c8ce 40%, #9aa1a9);
-  clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%);
-}
-
 .demo-menubar {
   position: absolute;
   inset: 0 0 auto 0;
