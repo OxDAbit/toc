@@ -21,8 +21,12 @@ final class StatusMenuController: NSObject {
     private let statusLine = NSMenuItem()
     private let statusDetail = NSMenuItem()
     private let hotkeyWarning = NSMenuItem()
+    private let snapItem = NSMenuItem()
+    private let loginItem = NSMenuItem()
 
     private let onAction: (WindowAction) -> Void
+    private let onToggleSnap: () -> Void
+    private let onToggleLogin: () -> Void
     private let onCheck: () -> Void
     private let onCopyDiagnostics: () -> Void
 
@@ -30,13 +34,19 @@ final class StatusMenuController: NSObject {
      * @brief  Crea el icono y el menú.
      *
      * @param[in]  onAction           Se llama al elegir una acción.
+     * @param[in]  onToggleSnap       Se llama al activar o desactivar el ajuste al arrastrar.
+     * @param[in]  onToggleLogin      Se llama al activar o desactivar la apertura al iniciar sesión.
      * @param[in]  onCheck            Se llama al pedir una comprobación de Accesibilidad.
      * @param[in]  onCopyDiagnostics  Se llama al pedir el diagnóstico.
      */
     init(onAction: @escaping (WindowAction) -> Void,
+         onToggleSnap: @escaping () -> Void,
+         onToggleLogin: @escaping () -> Void,
          onCheck: @escaping () -> Void,
          onCopyDiagnostics: @escaping () -> Void) {
         self.onAction = onAction
+        self.onToggleSnap = onToggleSnap
+        self.onToggleLogin = onToggleLogin
         self.onCheck = onCheck
         self.onCopyDiagnostics = onCopyDiagnostics
         super.init()
@@ -67,12 +77,23 @@ final class StatusMenuController: NSObject {
             let entry = NSMenuItem(title: action.title, action: #selector(actionSelected(_:)), keyEquivalent: "")
             entry.target = self
             entry.representedObject = action.rawValue
+            entry.image = MenuIcon.image(for: action)
             if let shortcut = action.defaultShortcut {
                 entry.keyEquivalent = Self.keyEquivalent(shortcut.key)
                 entry.keyEquivalentModifierMask = Self.modifierMask(shortcut.modifiers)
             }
             menu.addItem(entry)
         }
+
+        menu.addItem(.separator())
+        snapItem.title = "Ajustar al arrastrar a los bordes"
+        snapItem.action = #selector(snapSelected)
+        snapItem.target = self
+        menu.addItem(snapItem)
+        loginItem.title = "Abrir al iniciar sesión"
+        loginItem.action = #selector(loginSelected)
+        loginItem.target = self
+        menu.addItem(loginItem)
 
         menu.addItem(.separator())
         let check = NSMenuItem(title: "Comprobar Accesibilidad", action: #selector(checkSelected), keyEquivalent: "")
@@ -122,6 +143,35 @@ final class StatusMenuController: NSObject {
         hotkeyWarning.isHidden = failed.isEmpty
         hotkeyWarning.title = "Atajos ocupados por otra app: \(failed.count)"
         hotkeyWarning.toolTip = failed.joined(separator: "\n")
+    }
+
+    /**
+     * @brief  Marca o desmarca las opciones del menú.
+     *
+     * @param[in]  snapEnabled   Si el ajuste al arrastrar está activo.
+     * @param[in]  loginEnabled  Si toc se abre al iniciar sesión.
+     * @param[in]  loginPending  Si macOS espera la aprobación del usuario.
+     */
+    func update(snapEnabled: Bool, loginEnabled: Bool, loginPending: Bool) {
+        snapItem.state = snapEnabled ? .on : .off
+        loginItem.state = loginEnabled ? .on : (loginPending ? .mixed : .off)
+        loginItem.toolTip = loginPending
+            ? "Pendiente de aprobar en Ajustes del Sistema → General → Ítems de inicio de sesión"
+            : nil
+    }
+
+    /**
+     * @brief  Atiende el cambio del ajuste al arrastrar.
+     */
+    @objc private func snapSelected() {
+        onToggleSnap()
+    }
+
+    /**
+     * @brief  Atiende el cambio de la apertura al iniciar sesión.
+     */
+    @objc private func loginSelected() {
+        onToggleLogin()
     }
 
     /**

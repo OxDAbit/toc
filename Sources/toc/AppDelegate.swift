@@ -20,9 +20,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let health = HealthMonitor()
     private let hotkeys = HotkeyService()
     private let lifecycle = LifecycleMonitor()
+    private lazy var snap = SnapController { [weak self] action in self?.run(action) }
     private var menu: StatusMenuController?
     /// Evita repetir el aviso del fallo mientras dura el mismo episodio.
     private var brokenAlertShown = false
+
+    /// Clave de preferencias del ajuste al arrastrar (activo por defecto).
+    private let snapDefaultsKey = "snapToEdges"
 
     /// Segundos que se espera tras despertar antes de comprobar Accesibilidad.
     private let wakeCheckDelay: Duration = .seconds(3)
@@ -37,6 +41,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu = StatusMenuController(
             onAction: { [weak self] action in self?.run(action) },
+            onToggleSnap: { [weak self] in self?.toggleSnap() },
+            onToggleLogin: { [weak self] in self?.toggleLogin() },
             onCheck: { [weak self] in self?.health.check() },
             onCopyDiagnostics: { [weak self] in self?.copyDiagnostics() }
         )
@@ -49,8 +55,43 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         })
         menu?.update(failedHotkeys: hotkeys.failed)
 
+        UserDefaults.standard.register(defaults: [snapDefaultsKey: true])
+        snap.isEnabled = UserDefaults.standard.bool(forKey: snapDefaultsKey)
+        refreshOptions()
+
         lifecycle.start { [weak self] event in self?.systemEvent(event) }
         health.check()
+    }
+
+    /**
+     * @brief  Activa o desactiva el ajuste al arrastrar y lo guarda en las preferencias.
+     */
+    private func toggleSnap() {
+        snap.isEnabled.toggle()
+        UserDefaults.standard.set(snap.isEnabled, forKey: snapDefaultsKey)
+        refreshOptions()
+    }
+
+    /**
+     * @brief  Activa o desactiva la apertura al iniciar sesión.
+     */
+    private func toggleLogin() {
+        if let error = LoginItem.set(!LoginItem.isEnabled) {
+            let alert = NSAlert()
+            alert.messageText = "No se pudo cambiar la apertura al iniciar sesión"
+            alert.informativeText = error
+            NSApp.activate()
+            alert.runModal()
+        }
+        refreshOptions()
+    }
+
+    /**
+     * @brief  Refleja en el menú el estado de las opciones.
+     */
+    private func refreshOptions() {
+        menu?.update(snapEnabled: snap.isEnabled, loginEnabled: LoginItem.isEnabled,
+                     loginPending: LoginItem.needsApproval)
     }
 
     /**

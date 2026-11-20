@@ -5,6 +5,7 @@
 #           build/toc.app con su Info.plist y lo firma con el certificado
 #           autofirmado «toc Code Signing» (o el que indique TOC_SIGN_IDENTITY),
 #           para que macOS conserve el permiso de Accesibilidad entre versiones.
+#           Con --install, además la copia a /Applications/toc.app.
 # Version:  v0.0.1
 # Author:   David Alvarez Medina aka 0xDA_bit
 # Created:  20/11/2026
@@ -20,6 +21,20 @@ APP="$ROOT/build/toc.app"
 # extendidos que codesign rechaza: se monta y firma fuera y luego se copia.
 STAGE="$(mktemp -d)/toc.app"
 SWIFT_FLAGS=(-c release --arch arm64 --arch x86_64 --package-path "$ROOT")
+INSTALL=false
+
+## @brief  Interpreta los argumentos del script.
+#
+#  @param[in]  $@  Argumentos recibidos (solo se admite --install).
+parse_args() {
+    for arg in "$@"; do
+        case "$arg" in
+            --install) INSTALL=true ;;
+            -h|--help) echo "Uso: $0 [--install]"; exit 0 ;;
+            *) echo "Opción desconocida: $arg" >&2; exit 1 ;;
+        esac
+    done
+}
 
 ## @brief  Compila el ejecutable toc como binario universal.
 #
@@ -64,8 +79,25 @@ install_bundle() {
     rm -rf "$(dirname "$STAGE")"
 }
 
+## @brief  Copia toc.app a /Applications, cerrando antes la copia en ejecución.
+install_applications() {
+    local dest="/Applications/toc.app"
+    if pgrep -x toc >/dev/null; then
+        echo "→ Cerrando toc…"
+        osascript -e 'tell application id "com.oxdabit.toc" to quit' >/dev/null 2>&1 || true
+        sleep 1
+    fi
+    rm -rf "$dest"
+    ditto "$APP" "$dest"
+    echo "✓ Instalado en $dest"
+}
+
+parse_args "$@"
 build_binary
 assemble_bundle
 sign_bundle
 install_bundle
 echo "✓ Listo: $APP"
+if [[ "$INSTALL" == true ]]; then
+    install_applications
+fi

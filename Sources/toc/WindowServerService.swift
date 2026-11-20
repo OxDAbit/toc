@@ -52,4 +52,29 @@ enum WindowServerService {
     static func frontWindow(pid: pid_t) -> ServerWindow? {
         onScreenWindows().first { $0.pid == pid }
     }
+
+    /**
+     * @brief  Devuelve la ventana normal que está más arriba en un punto de la pantalla.
+     *
+     * @param[in]  point    Punto global (origen arriba a la izquierda).
+     * @param[in]  exclude  Proceso que se ignora (normalmente, el propio toc).
+     * @return La ventana encontrada, o nil.
+     */
+    static func window(at point: CGPoint, excluding exclude: pid_t) -> ServerWindow? {
+        onScreenWindows().first { $0.pid != exclude && $0.bounds.contains(point) }
+    }
+
+    /**
+     * @brief  Lee el marco actual de una ventana concreta.
+     *
+     * @param[in]  id  CGWindowID de la ventana.
+     * @return Marco con origen arriba a la izquierda, o nil si ya no existe.
+     */
+    static func bounds(of id: CGWindowID) -> CGRect? {
+        guard let list = CGWindowListCopyWindowInfo([.optionIncludingWindow], id) as? [[String: Any]],
+              let dict = list.first?[kCGWindowBounds as String] as? [String: Any] else {
+            return nil
+        }
+        return CGRect(dictionaryRepresentation: dict as CFDictionary)
+    }
 }
