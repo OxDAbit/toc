@@ -1,0 +1,158 @@
+<!doctype html>
+<!--
+-------------------------------------------------------------------------------
+Name:     en/index.html
+Purpose:  Web de presentación de toc (inglés). Generada por
+          tools/build.py: no se edita a mano.
+Version:  v0.0.1
+Author:   David Alvarez Medina aka 0xDA_bit
+Created:  20/11/2026
+-------------------------------------------------------------------------------
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>toc: put your windows in place on macOS</title>
+<meta name="description" content="toc is a macOS menu bar app that moves the active window to halves, thirds or quarters of the screen with a shortcut or by dragging it to an edge.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#1c3f6e">
+<link rel="alternate" hreflang="es" href="https://oxdabit.github.io/toc/">
+<link rel="alternate" hreflang="en" href="https://oxdabit.github.io/toc/en/">
+<link rel="icon" href="../assets/oxdabit.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&family=Sometype+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/demo.js"></script>
+</head>
+<body>
+<a class="skip" href="#contenido">Skip to content</a>
+
+<header class="hero">
+  <nav class="top" aria-label="toc">
+    <a class="wordmark" href="../">toc</a>
+    <ul>
+      <li><a href="#atajos">Shortcuts</a></li>
+      <li><a href="#arrastrar">Drag</a></li>
+      <li><a href="#reposo">Sleep</a></li>
+      <li><a href="#instalar">Install</a></li>
+      <li><a href="../" hreflang="es" lang="es">Español</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <h1>Every window, in its place.</h1>
+      <p class="lede">toc lives in your Mac&#x27;s menu bar and moves the active window to halves, thirds or quarters of the screen with a keyboard shortcut, or when you drag it to an edge.</p>
+      <p class="actions">
+        <a class="button primary" href="https://github.com/OxDAbit/toc/releases">Download toc</a>
+        <a class="button ghost" href="#compilar">Build from source</a>
+      </p>
+      <p class="requirements">For macOS 26 or later, on Intel and Apple silicon Macs. Version 0.0.1.</p>
+    </div>
+
+    <figure class="demo" data-demo aria-label="toc demo">
+      <div class="demo-screen">
+        <div class="demo-menubar" aria-hidden="true"><span>toc</span></div>
+        <div class="demo-area">
+          <div class="demo-footprint" hidden></div>
+          <div class="demo-window" tabindex="0" role="application" aria-roledescription="Notes"
+               aria-label="Notes">
+            <div class="demo-titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>Notes</div>
+            <div class="demo-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+        <div class="demo-dock" aria-hidden="true"></div>
+      </div>
+      <figcaption>
+        <p class="demo-status" aria-live="polite">Ready to try</p>
+        <div class="demo-buttons"><button type="button" data-action="leftHalf" title="Left half (⌃⌥←)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c34"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c34)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="10.00" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Left half</span></button><button type="button" data-action="rightHalf" title="Right half (⌃⌥→)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c35"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c35)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="11.00" y="1.50" width="10.00" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Right half</span></button><button type="button" data-action="topHalf" title="Top half (⌃⌥↑)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c36"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c36)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="20.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Top half</span></button><button type="button" data-action="bottomHalf" title="Bottom half (⌃⌥↓)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c37"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c37)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="8.00" width="20.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Bottom half</span></button><button type="button" data-action="topLeft" title="Top left (⌃⌥U)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c38"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c38)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="10.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Top left</span></button><button type="button" data-action="topRight" title="Top right (⌃⌥I)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c39"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c39)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="11.00" y="1.50" width="10.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Top right</span></button><button type="button" data-action="bottomLeft" title="Bottom left (⌃⌥J)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c40"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c40)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="8.00" width="10.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Bottom left</span></button><button type="button" data-action="bottomRight" title="Bottom right (⌃⌥K)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c41"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c41)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="11.00" y="8.00" width="10.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Bottom right</span></button><button type="button" data-action="firstThird" title="First third (⌃⌥D)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c42"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c42)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="6.67" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">First third</span></button><button type="button" data-action="lastTwoThirds" title="Last two thirds (⌃⌥T)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c43"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c43)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="7.67" y="1.50" width="13.33" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Last two thirds</span></button><button type="button" data-action="maximize" title="Maximize (⌃⌥↩)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c44"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c44)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="20.00" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Maximize</span></button><button type="button" data-action="center" title="Center (⌃⌥C)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c45"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c45)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="6.00" y="4.68" width="10.00" height="6.64"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Center</span></button><button type="button" data-action="restore" title="Restore (⌃⌥⌫)"><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c46"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c46)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/></g><path class="i-arrow" d="M8.6 6.2 6.4 8.2l2.2 2M6.6 8.2h6.2a2.4 2.4 0 0 1 0 4.8h-1.6"/><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="visually-hidden">Restore</span></button></div>
+        <p class="demo-hint">Try it here: press ⌃⌥ and an arrow, use the buttons, or drag the window by its title bar.</p>
+      </figcaption>
+      <script type="application/json" class="demo-labels">{"leftHalf": "Left half", "rightHalf": "Right half", "centerHalf": "Center half", "topHalf": "Top half", "bottomHalf": "Bottom half", "topLeft": "Top left", "topRight": "Top right", "bottomLeft": "Bottom left", "bottomRight": "Bottom right", "firstThird": "First third", "centerThird": "Center third", "lastThird": "Last third", "firstTwoThirds": "First two thirds", "centerTwoThirds": "Center two thirds", "lastTwoThirds": "Last two thirds", "maximize": "Maximize", "almostMaximize": "Almost maximize", "maximizeHeight": "Maximize height", "center": "Center", "restore": "Restore", "_ready": "Ready to try", "_empty": "There is no previous position"}</script>
+    </figure>
+  </div>
+</header>
+
+<main id="contenido">
+  <section id="atajos" class="section">
+    <div class="section-head">
+      <h2>Twenty positions, each with its shortcut</h2>
+      <p>They are the same shortcuts Rectangle uses, so there is nothing new to learn. In toc&#x27;s menu every action has an icon that shows where the window will go.</p>
+    </div>
+    <div class="menu"><ul class="menu-group"><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c47"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c47)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="10.00" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Left half</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>←</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c48"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c48)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="11.00" y="1.50" width="10.00" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Right half</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>→</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c49"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c49)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="6.00" y="1.50" width="10.00" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Center half</span><span class="combo"><span class="none">no shortcut</span></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c50"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c50)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="20.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Top half</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>↑</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c51"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c51)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="8.00" width="20.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Bottom half</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>↓</kbd></span></li></ul>
+<ul class="menu-group"><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c52"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c52)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="10.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Top left</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>U</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c53"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c53)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="11.00" y="1.50" width="10.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Top right</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>I</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c54"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c54)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="8.00" width="10.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Bottom left</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>J</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c55"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c55)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="11.00" y="8.00" width="10.00" height="6.50"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Bottom right</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>K</kbd></span></li></ul>
+<ul class="menu-group"><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c56"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c56)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="6.67" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">First third</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>D</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c57"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c57)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="7.67" y="1.50" width="6.67" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Center third</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>F</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c58"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c58)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="14.33" y="1.50" width="6.67" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Last third</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>G</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c59"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c59)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="13.33" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">First two thirds</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>E</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c60"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c60)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="4.33" y="1.50" width="13.33" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Center two thirds</span><span class="combo"><span class="none">no shortcut</span></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c61"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c61)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="7.67" y="1.50" width="13.33" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Last two thirds</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>T</kbd></span></li></ul>
+<ul class="menu-group"><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c62"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c62)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="1.00" y="1.50" width="20.00" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Maximize</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>↩</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c63"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c63)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="3.50" y="4.00" width="15.00" height="8.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Almost maximize</span><span class="combo"><span class="none">no shortcut</span></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c64"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c64)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="6.00" y="1.50" width="10.00" height="13.00"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Maximize height</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>⇧</kbd><kbd>↑</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c65"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c65)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/><rect class="i-zone" x="6.00" y="4.68" width="10.00" height="6.64"/></g><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Center</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>C</kbd></span></li><li><svg class="icon" viewBox="0 0 22 16" aria-hidden="true"><defs><clipPath id="c66"><rect x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></clipPath></defs><g clip-path="url(#c66)"><rect class="i-bg" x="1.0" y="1.5" width="20.0" height="13.0"/></g><path class="i-arrow" d="M8.6 6.2 6.4 8.2l2.2 2M6.6 8.2h6.2a2.4 2.4 0 0 1 0 4.8h-1.6"/><rect class="i-frame" x="1.0" y="1.5" width="20.0" height="13.0" rx="2.5"/></svg><span class="name">Restore</span><span class="combo"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>⌫</kbd></span></li></ul></div>
+  </section>
+
+  <section id="arrastrar" class="section split">
+    <div class="section-head">
+      <h2>Drag it to the edge</h2>
+      <p>Take a window to the edge of the screen and toc shows you where it will land. Let go and it snaps into place.</p>
+      <dl class="zones">
+        <div><dt>Side edges</dt><dd>left or right half</dd></div>
+        <div><dt>Top edge</dt><dd>maximize</dd></div>
+        <div><dt>Corners</dt><dd>a quarter of the screen</dd></div>
+      </dl>
+      <p class="note">When you resize a window from its edge, toc stays out of the way.</p>
+    </div>
+    <svg class="blueprint" viewBox="0 0 480 312" role="img" aria-labelledby="bp-title">
+  <title id="bp-title">Drag it to the edge</title>
+  <rect class="bp-screen" x="20" y="20" width="440" height="260" rx="10"/>
+  <rect class="bp-band" x="20" y="20" width="440" height="14"/>
+  <rect class="bp-band" x="20" y="20" width="14" height="260"/>
+  <rect class="bp-band" x="446" y="20" width="14" height="260"/>
+  <rect class="bp-corner" x="20" y="20" width="56" height="56"/>
+  <rect class="bp-corner" x="404" y="20" width="56" height="56"/>
+  <rect class="bp-corner" x="20" y="224" width="56" height="56"/>
+  <rect class="bp-corner" x="404" y="224" width="56" height="56"/>
+  <text class="bp-label" x="240" y="56" text-anchor="middle">maximize</text>
+  <text class="bp-label" x="52" y="158" text-anchor="start">half</text>
+  <text class="bp-label" x="428" y="158" text-anchor="end">half</text>
+  <text class="bp-label bp-small" x="48" y="256" text-anchor="middle">quarter</text>
+  <path class="bp-dim" d="M20 294h56M20 290v8M76 290v8"/>
+  <text class="bp-dim-text" x="48" y="308" text-anchor="middle">40 pt</text>
+</svg>
+  </section>
+
+  <section id="reposo" class="section sleep">
+    <div class="section-head">
+      <h2>It doesn't go quiet after sleep</h2>
+      <p>On some Macs running macOS 26, after waking from sleep, macOS stops giving Accessibility apps access to windows. Window managers stop responding without saying why, and only a restart fixes it. toc was built to speak up when that happens.</p>
+    </div>
+    <ol class="steps"><li>Your Mac wakes up and, three seconds later, toc checks that Accessibility responds.</li><li>If macOS returns the app instead of its windows, toc&#x27;s icon changes to ⚠︎ and explains what happened.</li><li>Finder, Safari, System Settings and other scriptable apps keep moving through Apple Events.</li><li>For everything else, toc tells you how to recover: restart your Mac, because logging out is not enough.</li></ol>
+    <p class="note">If you want to dig in, “Copy diagnostics” in toc&#x27;s menu gives you a report of what macOS sees.</p>
+  </section>
+
+  <section id="instalar" class="section">
+    <h2>Install toc</h2>
+    <div class="install">
+      <div>
+        <h3>Download</h3>
+        <p>Published versions are on the repository&#x27;s releases page on GitHub.</p>
+        <p><a class="button primary" href="https://github.com/OxDAbit/toc/releases">See releases on GitHub</a></p>
+        <p class="note">toc is signed with its own certificate, not one from Apple. The first time you open it, macOS will block it: go to System Settings → Privacy &amp; Security and click “Open Anyway”.</p>
+      </div>
+      <div id="compilar">
+        <h3>Build from source</h3>
+        <p>You need macOS 26 and Xcode 26. The script builds a universal binary, signs it and copies it to Applications.</p>
+        <ol class="commands"><li>Clone the repository:<pre><code>git clone https://github.com/OxDAbit/toc.git</code></pre></li><li>Go into the folder:<pre><code>cd toc</code></pre></li><li>Build and install:<pre><code>./scripts/build-app.sh --install</code></pre></li><li>Open toc:<pre><code>open /Applications/toc.app</code></pre></li></ol>
+      </div>
+    </div>
+    <div class="after">
+      <h3>After installing</h3>
+      <p>Give toc the Accessibility permission when it asks. To open it when your Mac starts, check “Open at login” in its menu.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p class="meta">toc 0.0.1 is inspired by Rectangle and built with Swift and AppKit. <a href="https://github.com/OxDAbit/toc">Code on GitHub</a></p>
+  <a class="brand-mark" href="https://oxdabit.com"><img src="../assets/oxdabit.svg" alt="Isotipo de 0xDA bit" width="56" height="56"></a>
+  <p class="brand"><b>0xDA</b> bit · <i>Del boceto al plato</i></p>
+  <p class="links"><a href="https://oxdabit.com">oxdabit.com</a> · <a href="https://www.youtube.com/@0xDAbitLabs">YouTube</a> · <a href="https://github.com/OxDAbit">GitHub</a> · <a href="https://x.com/0xDA_bit">X</a> · <a href="https://www.instagram.com/oxdabitlabs/">Instagram</a></p>
+</footer>
+</body>
+</html>
