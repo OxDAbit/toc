@@ -162,7 +162,7 @@ TEXT = {
         "after_h3": "Después de instalar",
         "after_p": "Concede a toc el permiso de Accesibilidad cuando te lo pida. Para que se abra al encender el Mac, "
                    "marca «Abrir al iniciar sesión» en su menú.",
-        "footer_meta": "toc " + VERSION + " está inspirada en Rectangle y hecha con Swift y AppKit.",
+        "footer_meta": "toc v" + VERSION + " with ❤️ by 0xDA_bit",
         "code": "Código en GitHub",
         "skip": "Saltar al contenido",
         "nav_shortcuts": "Atajos", "nav_drag": "Arrastrar", "nav_sleep": "Reposo", "nav_install": "Instalar",
@@ -217,7 +217,7 @@ TEXT = {
         "after_h3": "After installing",
         "after_p": "Give toc the Accessibility permission when it asks. To open it when your Mac starts, "
                    "check “Open at login” in its menu.",
-        "footer_meta": "toc " + VERSION + " is inspired by Rectangle and built with Swift and AppKit.",
+        "footer_meta": "toc v" + VERSION + " with ❤️ by 0xDA_bit",
         "code": "Code on GitHub",
         "skip": "Skip to content",
         "nav_shortcuts": "Shortcuts", "nav_drag": "Drag", "nav_sleep": "Sleep", "nav_install": "Install",
@@ -332,6 +332,7 @@ Created:  20/11/2026
 <a class="skip" href="#contenido">{t["skip"]}</a>
 
 <header class="hero">
+  <div class="hero-tiles" aria-hidden="true"><i></i><i></i><i></i></div>
   <nav class="top" aria-label="toc">
     <a class="wordmark" href="{p if p else "./"}">toc</a>
     <ul>

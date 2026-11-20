@@ -1,8 +1,8 @@
 /*
 -------------------------------------------------------------------------------
 Name:     assets/style.css
-Purpose:  Estilos de la web de toc. Idea: un plano en cianotipo (el azul de
-          0xDA bit) sobre el que se colocan ventanas. La portada es el plano;
+Purpose:  Estilos de la web de toc. Idea: la portada en azul cianotipo de
+          0xDA bit, organizada como un escritorio con ventanas en mosaico;
           el resto de la página es papel claro (u oscuro, según el sistema).
 Version:  v0.0.1
 Author:   David Alvarez Medina aka 0xDA_bit
@@ -13,7 +13,6 @@ Created:  20/11/2026
 :root {
   /* Paleta de 0xDA bit */
   --cyan: #1c3f6e;          /* azul cianotipo: el plano */
-  --cyan-line: rgba(239, 235, 228, 0.16);
   --paper: #efebe4;         /* blanco roto */
   --vanilla: #f3e5ab;       /* vainilla: lo que se coloca */
   --ink: #1a2230;
@@ -103,17 +102,33 @@ kbd {
 /* ---------- Portada: el plano ---------- */
 
 .hero {
+  position: relative;
+  overflow: hidden;
   color: var(--paper);
   background-color: var(--cyan);
-  background-image:
-    linear-gradient(var(--cyan-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--cyan-line) 1px, transparent 1px),
-    linear-gradient(rgba(239, 235, 228, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(239, 235, 228, 0.06) 1px, transparent 1px);
-  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
-  background-position: -1px -1px;
   padding: 0 var(--gutter) clamp(48px, 8vw, 96px);
 }
+.hero > :not(.hero-tiles) { position: relative; z-index: 1; }
+
+/* Fondo: la propia portada está «colocada» como un escritorio en mosaico:
+   una ventana a la izquierda para el texto y, a la derecha, una franja para
+   la navegación y otra para la demo. */
+.hero-tiles {
+  position: absolute;
+  inset: 14px;
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  grid-template-rows: 58px 1fr;
+  gap: 14px;
+  pointer-events: none;
+}
+.hero-tiles i {
+  border-radius: 22px;
+  background: rgba(239, 235, 228, 0.035);
+  border: 1px solid rgba(239, 235, 228, 0.1);
+}
+.hero-tiles i:first-child { grid-row: 1 / span 2; }
+.hero-tiles i:last-child { background: rgba(243, 229, 171, 0.045); }
 .hero a { color: inherit; }
 
 .top {
@@ -487,6 +502,7 @@ pre {
 
 @media (max-width: 860px) {
   .hero-grid, .split { grid-template-columns: minmax(0, 1fr); }
+  .hero-tiles { display: none; }
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .steps li:nth-child(2n)::after { display: none; }
   .top { flex-direction: column; align-items: flex-start; }
