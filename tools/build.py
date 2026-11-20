@@ -9,6 +9,7 @@
 # Created:  20/11/2026
 # -------------------------------------------------------------------------------
 
+import hashlib
 import html
 import json
 from pathlib import Path
@@ -123,7 +124,7 @@ TEXT = {
         "download": "Descargar toc", "build": "Compilar desde el código",
         "requirements": "Para macOS 26 o posterior, en Mac con Intel o Apple Silicon. Versión " + VERSION + ".",
         "demo_label": "Demostración de toc",
-        "demo_hint": "Pruébalo aquí: pulsa ⌃⌥ y una flecha, usa los botones o arrastra la ventana por su barra.",
+        "demo_hint": "Pulsa ⌃⌥ y una flecha para probarlo aquí. Con toc abierto, moverás tu ventana de verdad.",
         "demo_window": "Notas",
         "demo_ready": "Listo para probar",
         "demo_restore_empty": "No hay ninguna posición anterior",
@@ -178,7 +179,7 @@ TEXT = {
         "download": "Download toc", "build": "Build from source",
         "requirements": "For macOS 26 or later, on Intel and Apple silicon Macs. Version " + VERSION + ".",
         "demo_label": "toc demo",
-        "demo_hint": "Try it here: press ⌃⌥ and an arrow, use the buttons, or drag the window by its title bar.",
+        "demo_hint": "Press ⌃⌥ and an arrow to try it here. With toc running, you'll move your real window.",
         "demo_window": "Notes",
         "demo_ready": "Ready to try",
         "demo_restore_empty": "There is no previous position",
@@ -286,6 +287,14 @@ def drag_blueprint(t):
 </svg>'''
 
 
+## @brief  Calcula una huella corta de un archivo, para invalidar la caché del navegador.
+#
+#  @param[in]  name  Ruta relativa a la raíz de la web (str).
+#  @return Ocho primeros caracteres del hash MD5 del contenido (str).
+def fingerprint(name):
+    return hashlib.md5((ROOT / name).read_bytes()).hexdigest()[:8]
+
+
 ## @brief  Genera la página completa de un idioma.
 #
 #  @param[in]  lang  Código de idioma (str).
@@ -296,6 +305,7 @@ def page(lang):
     labels = {a: (es if lang == "es" else en) for a, _, _, es, en in ACTIONS}
     labels["_ready"] = t["demo_ready"]
     labels["_empty"] = t["demo_restore_empty"]
+    labels_init = html.escape(labels["rightHalf"])
     sleep_steps = "".join(f"<li>{html.escape(s)}</li>" for s in t["sleep_steps"])
     src_steps = "".join(f"<li>{html.escape(label)}<pre><code>{html.escape(cmd)}</code></pre></li>"
                         for label, cmd in zip(t["src_steps"], COMMANDS))
@@ -325,8 +335,8 @@ Created:  20/11/2026
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&family=Sometype+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="{p}assets/style.css">
-<script defer src="{p}assets/demo.js"></script>
+<link rel="stylesheet" href="{p}assets/style.css?v={fingerprint("assets/style.css")}">
+<script defer src="{p}assets/demo.js?v={fingerprint("assets/demo.js")}"></script>
 </head>
 <body>
 <a class="skip" href="#contenido">{t["skip"]}</a>
@@ -355,23 +365,17 @@ Created:  20/11/2026
       <p class="requirements">{html.escape(t["requirements"])}</p>
     </div>
 
-    <figure class="demo" data-demo aria-label="{t["demo_label"]}">
-      <div class="demo-screen">
-        <div class="demo-menubar" aria-hidden="true"><img src="{p}assets/toc-mono-light.svg" alt=""></div>
-        <div class="demo-area">
-          <div class="demo-footprint" hidden></div>
-          <div class="demo-window" tabindex="0" role="application" aria-roledescription="{t["demo_window"]}"
-               aria-label="{t["demo_window"]}">
-            <div class="demo-titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>{t["demo_window"]}</div>
-            <div class="demo-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-          </div>
-        </div>
-        <div class="demo-dock" aria-hidden="true"></div>
+    <figure class="shortcut-demo" data-demo aria-label="{t["demo_label"]}">
+      <div class="sd-screen" aria-hidden="true">
+        <div class="sd-ghost"></div>
+        <div class="sd-zone"></div>
+      </div>
+      <div class="sd-keys" aria-hidden="true">
+        <kbd class="sd-mod">⌃</kbd><span class="sd-plus">+</span><kbd class="sd-mod">⌥</kbd><span class="sd-plus">+</span><kbd class="sd-key">→</kbd>
       </div>
       <figcaption>
-        <p class="demo-status" aria-live="polite">{t["demo_ready"]}</p>
-        <div class="demo-buttons">{demo_buttons(lang)}</div>
-        <p class="demo-hint">{html.escape(t["demo_hint"])}</p>
+        <p class="sd-label" aria-live="polite">{labels_init}</p>
+        <p class="sd-hint">{html.escape(t["demo_hint"])}</p>
       </figcaption>
       <script type="application/json" class="demo-labels">{json.dumps(labels, ensure_ascii=False)}</script>
     </figure>
