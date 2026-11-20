@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="assets/icon.png" alt="Icono de toc" width="128" height="128">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-silueta-oscuro.svg">
+    <img src="assets/logo-silueta-claro.svg" alt="Logo de toc" width="128" height="128">
+  </picture>
 </p>
 
 <h1 align="center">toc</h1>
@@ -106,7 +109,7 @@ Concede a toc el permiso de Accesibilidad cuando te lo pida. Para que se abra al
 
 El código está bajo licencia [MIT](LICENSE): puedes usarlo, modificarlo y redistribuirlo manteniendo el aviso de copyright.
 
-Quedan fuera de esa licencia el nombre e isotipo de **0xDA** bit y el nombre, logo e iconos de toc (`assets/oxdabit.png`, `assets/logo.svg`, `assets/logo-mono.svg`, `assets/icon.png` y `Resources/toc.icns`). Si publicas una versión modificada, usa tu propio nombre y tus propios gráficos.
+Quedan fuera de esa licencia el nombre e isotipo de **0xDA** bit y el nombre, logo e iconos de toc (`assets/oxdabit.png`, `assets/logo.svg`, `assets/logo-mono.svg`, `assets/logo-silueta-claro.svg`, `assets/logo-silueta-oscuro.svg`, `assets/icon.png` y `Resources/toc.icns`). Si publicas una versión modificada, usa tu propio nombre y tus propios gráficos.
 
 ---
 
