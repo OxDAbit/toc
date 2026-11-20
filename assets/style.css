@@ -367,13 +367,30 @@ h3 {
 
 main h2, main h3 { color: var(--heading); }
 
+/* Cabeceras de sección centradas en la página */
+.section > .section-head,
+.section > h2 { text-align: center; margin-inline: auto; }
+.section > .section-head h2,
+.section > h2 { margin-inline: auto; }
+.section > .section-head p,
+.section > .note { margin-inline: auto; text-align: center; }
+/* En «Arrastrar» el texto acompaña al plano: se queda alineado a la izquierda. */
+.split > .section-head,
+.split > .section-head h2,
+.split > .section-head p { text-align: left; margin-inline: 0; }
+.after { text-align: center; }
+.after p { margin-inline: auto; }
+
 /* Atajos: el menú de toc desplegado en columnas */
+/* Rejilla en lugar de columnas CSS: Safari no reparte bien las listas en
+   columnas y dejaba un hueco vacío debajo. */
 .menu {
-  columns: 2 340px;
-  column-gap: clamp(24px, 4vw, 56px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(24px, 5vw, 72px);
+  align-items: start;
 }
 .menu-group {
-  break-inside: avoid;
   margin: 0 0 1.25rem;
   padding: 0.4rem 0;
   list-style: none;
@@ -493,6 +510,7 @@ pre {
 /* ---------- Pantallas estrechas ---------- */
 
 @media (max-width: 860px) {
+  .menu { grid-template-columns: minmax(0, 1fr); }
   .hero-panels { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; min-height: 0; }
   .panel-copy { grid-row: auto; }
   .split { grid-template-columns: minmax(0, 1fr); }
