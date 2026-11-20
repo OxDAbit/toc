@@ -213,83 +213,46 @@ main .button.primary { background: var(--petrol); color: var(--paper); border-co
   main .button.primary { background: var(--vanilla); color: var(--ink); border-color: var(--vanilla); }
 }
 
-/* ---------- Demo: el contenido de una pantalla de Mac ---------- */
+/* ---------- Demo: el contenido de una pantalla, en líneas limpias ---------- */
 
 .demo { margin: 0; }
 
-.demo-display { position: relative; }
 .demo-screen {
   position: relative;
   aspect-ratio: 43 / 18;          /* la proporción de un monitor ultrapanorámico */
   border: 2px solid var(--paper);
   border-radius: 14px;
   overflow: hidden;
-  /* Fondo de escritorio con la paleta de 0xDA bit */
-  background:
-    radial-gradient(60% 90% at 85% 110%, rgba(243, 229, 171, 0.55), transparent 60%),
-    radial-gradient(70% 90% at 10% -10%, rgba(132, 184, 196, 0.55), transparent 60%),
-    linear-gradient(160deg, #2b6070 0%, var(--cyan) 100%);
+  background: rgba(13, 42, 50, 0.55);
   touch-action: none;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font);
 }
 .demo-menubar {
-  position: absolute;
-  inset: 0 0 auto 0;
   height: 7%;
   min-height: 14px;
-  padding: 0 1.4%;
+  border-bottom: 1px solid rgba(239, 235, 228, 0.35);
+  padding: 0 2%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  color: #11161d;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  font-size: clamp(0.5rem, 0.95vw, 0.72rem);
-  z-index: 2;
+  justify-content: flex-end;
+  opacity: 0.85;
 }
-.mb-left, .mb-right { display: flex; align-items: center; gap: 1.1em; white-space: nowrap; }
-.mb-left b { font-weight: 700; }
-.mb-right .icon { width: 1.9em; height: auto; }
-.mb-right .i-zone { fill: #11161d; }
-.mb-right .i-frame { stroke: #11161d; }
-.mb-right .i-bg { opacity: 0.15; }
-
+.demo-menubar img { display: block; width: clamp(10px, 1.4vw, 15px); height: auto; }
 .demo-area {
   position: absolute;
   top: 7%;
-  bottom: 12%;
+  bottom: 9%;
   left: 0;
   right: 0;
 }
-
 .demo-dock {
   position: absolute;
-  bottom: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 8.5%;
-  padding: 0.6% 0.8%;
-  display: flex;
-  gap: clamp(3px, 0.5vw, 6px);
-  border-radius: clamp(6px, 1vw, 12px);
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  bottom: 1.5%;
+  left: 35%;
+  right: 35%;
+  height: 6%;
+  border: 1px solid rgba(239, 235, 228, 0.45);
+  border-radius: 6px;
 }
-.demo-dock i {
-  aspect-ratio: 1;
-  height: 100%;
-  border-radius: 24%;
-  background: var(--paper);
-}
-.demo-dock i:nth-child(1) { background: linear-gradient(#5ac8fa, #1e88e5); }
-.demo-dock i:nth-child(2) { background: linear-gradient(#f3e5ab, #e8cf6a); }
-.demo-dock i:nth-child(3) { background: linear-gradient(#84b8c4, var(--petrol)); }
-.demo-dock i:nth-child(4) { background: linear-gradient(#2d2f33, #0b0d10); }
-.demo-dock i:nth-child(5) { background: linear-gradient(#f5f5f7, #d2d2d7); }
 
 .demo-window,
 .demo-footprint {
@@ -301,91 +264,54 @@ main .button.primary { background: var(--petrol); color: var(--paper); border-co
 }
 .demo-window {
   --x: 0.32; --y: 0.16; --w: 0.36; --h: 0.6;
-  display: flex;
-  flex-direction: column;
-  border-radius: clamp(6px, 0.9vw, 10px);
-  background: #fbfaf7;
-  color: #1d1d1f;
-  box-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.35),
-    0 12px 32px -8px rgba(0, 0, 0, 0.45);
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--vanilla);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px rgba(26, 34, 48, 0.25);
   transition: left 260ms var(--ease), top 260ms var(--ease), width 260ms var(--ease), height 260ms var(--ease);
+  cursor: default;
   overflow: hidden;
 }
 .demo-window.dragging { transition: none; }
-.demo-window:focus-visible { outline-color: var(--vanilla); }
+.demo-window:focus-visible { outline-color: var(--paper); }
 
 .demo-titlebar {
-  position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex: none;
-  height: clamp(16px, 2.4vw, 26px);
-  background: #f0eee9;
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.12);
-  font-size: clamp(0.5rem, 0.95vw, 0.72rem);
-  font-weight: 600;
-  color: #3a3a3c;
+  gap: 8px;
+  padding: 2px 6px 4px;
+  font: 700 clamp(0.6rem, 1.1vw, 0.78rem)/1.2 var(--font);
   cursor: grab;
   user-select: none;
 }
 .dragging .demo-titlebar { cursor: grabbing; }
-.lights {
-  position: absolute;
-  left: 8px;
-  display: inline-flex;
-  gap: clamp(3px, 0.45vw, 6px);
-}
+.lights { display: inline-flex; gap: 4px; }
 .lights i {
-  width: clamp(6px, 0.8vw, 10px);
-  height: clamp(6px, 0.8vw, 10px);
+  width: 7px; height: 7px;
   border-radius: 50%;
-  background: #ff5f57;
-  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(26, 34, 48, 0.55);
 }
-.lights i:nth-child(2) { background: #febc2e; }
-.lights i:nth-child(3) { background: #28c840; }
-
-.demo-body { flex: 1; display: flex; min-height: 0; }
-.demo-sidebar {
-  width: 26%;
-  max-width: 120px;
-  background: #f3e5ab;
-  border-right: 0.5px solid rgba(0, 0, 0, 0.08);
-  padding: 6% 4%;
-}
-.demo-sidebar i {
-  display: block;
-  height: clamp(3px, 0.5vw, 6px);
-  margin-bottom: clamp(4px, 0.6vw, 8px);
-  border-radius: 3px;
-  background: rgba(30, 74, 87, 0.28);
-}
-.demo-sidebar i:first-child { background: rgba(30, 74, 87, 0.6); width: 70%; }
-.demo-lines { flex: 1; padding: 4% 5%; }
+.demo-lines { padding: 6px 8px; }
 .demo-lines i {
   display: block;
-  height: clamp(3px, 0.5vw, 6px);
-  margin: 0 0 clamp(5px, 0.7vw, 9px);
+  height: 5px;
+  margin: 0 0 7px;
   border-radius: 3px;
-  background: #e2e0da;
+  background: rgba(30, 74, 87, 0.22);
 }
-.demo-lines i:first-child { width: 45%; height: clamp(5px, 0.8vw, 9px); background: #c9c6be; }
-.demo-lines i:nth-child(3) { width: 82%; }
-.demo-lines i:nth-child(4) { width: 64%; }
-.demo-lines i:nth-child(5) { width: 72%; }
+.demo-lines i:nth-child(2) { width: 82%; }
+.demo-lines i:nth-child(3) { width: 64%; }
+.demo-lines i:nth-child(4) { width: 72%; }
 
 .demo-footprint {
-  border-radius: clamp(6px, 0.9vw, 10px);
-  background: rgba(255, 255, 255, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  border: 2px dashed var(--vanilla);
+  border-radius: 10px;
+  background: rgba(243, 229, 171, 0.16);
   pointer-events: none;
 }
 
-.demo figcaption { margin-top: 1.25rem; }
+.demo figcaption { margin-top: 1rem; }
 .demo-status {
   margin: 0 0 0.75rem;
   font-weight: 700;
