@@ -166,6 +166,7 @@ TEXT = {
         "footer_meta": "toc v" + VERSION + " with ❤️ by 0xDA_bit",
         "code": "Código en GitHub",
         "skip": "Saltar al contenido",
+        "lang_label": "Idioma",
         "nav_shortcuts": "Atajos", "nav_drag": "Arrastrar", "nav_sleep": "Reposo", "nav_install": "Instalar",
     },
     "en": {
@@ -221,6 +222,7 @@ TEXT = {
         "footer_meta": "toc v" + VERSION + " with ❤️ by 0xDA_bit",
         "code": "Code on GitHub",
         "skip": "Skip to content",
+        "lang_label": "Language",
         "nav_shortcuts": "Shortcuts", "nav_drag": "Drag", "nav_sleep": "Sleep", "nav_install": "Install",
     },
 }
@@ -345,13 +347,27 @@ Created:  20/11/2026
   <div class="hero-tiles" aria-hidden="true"><i></i><i></i><i></i></div>
   <nav class="top" aria-label="toc">
     <a class="wordmark" href="{p if p else "./"}"><img src="{p}assets/toc.svg" alt="" width="36" height="36">toc</a>
-    <ul>
-      <li><a href="#atajos">{t["nav_shortcuts"]}</a></li>
-      <li><a href="#arrastrar">{t["nav_drag"]}</a></li>
-      <li><a href="#reposo">{t["nav_sleep"]}</a></li>
-      <li><a href="#instalar">{t["nav_install"]}</a></li>
-      <li><a href="{p}{alternate}" hreflang="{t["other_lang"]}" lang="{t["other_lang"]}">{t["other"]}</a></li>
-    </ul>
+    <div class="top-right">
+      <ul class="nav-links">
+        <li><a href="#atajos">{t["nav_shortcuts"]}</a></li>
+        <li><a href="#arrastrar">{t["nav_drag"]}</a></li>
+        <li><a href="#reposo">{t["nav_sleep"]}</a></li>
+        <li><a href="#instalar">{t["nav_install"]}</a></li>
+      </ul>
+      <details class="lang">
+        <summary aria-label="{t["lang_label"]}">
+          <svg class="lang-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <text x="1" y="13" font-size="12">文</text><text x="12.5" y="21.5" font-size="12" font-weight="700">A</text>
+          </svg>
+          <span>{t["lang"].upper()}</span>
+          <svg class="lang-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </summary>
+        <ul class="lang-menu">
+          <li><a href="{p if lang == "en" else "./"}" hreflang="es" lang="es"{' aria-current="page"' if lang == "es" else ""}>Español</a></li>
+          <li><a href="{"./" if lang == "en" else "en/"}" hreflang="en" lang="en"{' aria-current="page"' if lang == "en" else ""}>English</a></li>
+        </ul>
+      </details>
+    </div>
   </nav>
 
   <div class="hero-grid">

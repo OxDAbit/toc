@@ -23,8 +23,8 @@ Created:  20/11/2026
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&family=Sometype+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../assets/style.css?v=18302ef5">
-<script defer src="../assets/demo.js?v=b47cd554"></script>
+<link rel="stylesheet" href="../assets/style.css?v=10b8e357">
+<script defer src="../assets/demo.js?v=91f83004"></script>
 </head>
 <body>
 <a class="skip" href="#contenido">Skip to content</a>
@@ -33,13 +33,27 @@ Created:  20/11/2026
   <div class="hero-tiles" aria-hidden="true"><i></i><i></i><i></i></div>
   <nav class="top" aria-label="toc">
     <a class="wordmark" href="../"><img src="../assets/toc.svg" alt="" width="36" height="36">toc</a>
-    <ul>
-      <li><a href="#atajos">Shortcuts</a></li>
-      <li><a href="#arrastrar">Drag</a></li>
-      <li><a href="#reposo">Sleep</a></li>
-      <li><a href="#instalar">Install</a></li>
-      <li><a href="../" hreflang="es" lang="es">Español</a></li>
-    </ul>
+    <div class="top-right">
+      <ul class="nav-links">
+        <li><a href="#atajos">Shortcuts</a></li>
+        <li><a href="#arrastrar">Drag</a></li>
+        <li><a href="#reposo">Sleep</a></li>
+        <li><a href="#instalar">Install</a></li>
+      </ul>
+      <details class="lang">
+        <summary aria-label="Language">
+          <svg class="lang-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <text x="1" y="13" font-size="12">文</text><text x="12.5" y="21.5" font-size="12" font-weight="700">A</text>
+          </svg>
+          <span>EN</span>
+          <svg class="lang-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </summary>
+        <ul class="lang-menu">
+          <li><a href="../" hreflang="es" lang="es">Español</a></li>
+          <li><a href="./" hreflang="en" lang="en" aria-current="page">English</a></li>
+        </ul>
+      </details>
+    </div>
   </nav>
 
   <div class="hero-grid">

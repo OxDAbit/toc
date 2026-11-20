@@ -1,7 +1,7 @@
 /*
 -------------------------------------------------------------------------------
 Name:     assets/demo.js
-Purpose:  Animación de la portada: se pulsan las teclas de un atajo de toc
+Purpose:  Cierre del selector de idioma y animación de la portada: se pulsan las teclas de un atajo de toc
           (⌃⌥ + tecla) y la ventana dibujada se coloca en su zona. Recorre
           varios atajos en bucle y responde también a los atajos reales del
           teclado. Usa las mismas fórmulas que LayoutEngine, en fracciones.
@@ -13,6 +13,17 @@ Created:  20/11/2026
 
 (() => {
   "use strict";
+
+  // Cierra el selector de idioma al pulsar fuera de él o la tecla Escape.
+  const lang = document.querySelector(".lang");
+  if (lang) {
+    document.addEventListener("click", (event) => {
+      if (lang.open && !lang.contains(event.target)) lang.open = false;
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && lang.open) { lang.open = false; lang.querySelector("summary").focus(); }
+    });
+  }
 
   const demo = document.querySelector("[data-demo]");
   if (!demo) return;
