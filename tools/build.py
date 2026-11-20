@@ -344,10 +344,23 @@ Created:  20/11/2026
 <a class="skip" href="#contenido">{t["skip"]}</a>
 
 <header class="hero">
-  <div class="hero-tiles" aria-hidden="true"><i></i><i></i><i></i></div>
-  <nav class="top" aria-label="toc">
-    <a class="wordmark" href="{p if p else "./"}"><img src="{p}assets/toc.svg" alt="" width="36" height="36">toc</a>
-    <div class="top-right">
+  <div class="hero-panels">
+    <div class="panel panel-copy">
+      <div class="copy-column">
+        <a class="wordmark" href="{p if p else "./"}"><img src="{p}assets/toc.svg" alt="" width="36" height="36">toc</a>
+        <div class="hero-copy">
+      <h1>{html.escape(t["h1"])}</h1>
+      <p class="lede">{html.escape(t["lede"])}</p>
+      <p class="actions">
+        <a class="button primary" href="{REPO}/releases">{t["download"]}</a>
+        <a class="button ghost" href="#compilar">{t["build"]}</a>
+      </p>
+      <p class="requirements">{html.escape(t["requirements"])}</p>
+    </div>
+      </div>
+    </div>
+
+    <nav class="panel panel-nav" aria-label="toc">
       <ul class="nav-links">
         <li><a href="#atajos">{t["nav_shortcuts"]}</a></li>
         <li><a href="#arrastrar">{t["nav_drag"]}</a></li>
@@ -367,20 +380,9 @@ Created:  20/11/2026
           <li><a href="{"./" if lang == "en" else "en/"}" hreflang="en" lang="en"{' aria-current="page"' if lang == "en" else ""}>English</a></li>
         </ul>
       </details>
-    </div>
-  </nav>
+    </nav>
 
-  <div class="hero-grid">
-    <div class="hero-copy">
-      <h1>{html.escape(t["h1"])}</h1>
-      <p class="lede">{html.escape(t["lede"])}</p>
-      <p class="actions">
-        <a class="button primary" href="{REPO}/releases">{t["download"]}</a>
-        <a class="button ghost" href="#compilar">{t["build"]}</a>
-      </p>
-      <p class="requirements">{html.escape(t["requirements"])}</p>
-    </div>
-
+    <div class="panel panel-demo">
     <figure class="shortcut-demo" data-demo aria-label="{t["demo_label"]}">
       <div class="sd-screen" aria-hidden="true">
         <div class="sd-ghost"></div>
@@ -395,6 +397,7 @@ Created:  20/11/2026
       </figcaption>
       <script type="application/json" class="demo-labels">{json.dumps(labels, ensure_ascii=False)}</script>
     </figure>
+    </div>
   </div>
 </header>
 

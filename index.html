@@ -23,17 +23,30 @@ Created:  20/11/2026
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&family=Sometype+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="assets/style.css?v=10b8e357">
+<link rel="stylesheet" href="assets/style.css?v=8ec3c9ee">
 <script defer src="assets/demo.js?v=91f83004"></script>
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
 <header class="hero">
-  <div class="hero-tiles" aria-hidden="true"><i></i><i></i><i></i></div>
-  <nav class="top" aria-label="toc">
-    <a class="wordmark" href="./"><img src="assets/toc.svg" alt="" width="36" height="36">toc</a>
-    <div class="top-right">
+  <div class="hero-panels">
+    <div class="panel panel-copy">
+      <div class="copy-column">
+        <a class="wordmark" href="./"><img src="assets/toc.svg" alt="" width="36" height="36">toc</a>
+        <div class="hero-copy">
+      <h1>Cada ventana, en su sitio.</h1>
+      <p class="lede">toc vive en la barra de menús de tu Mac y coloca la ventana activa en mitades, tercios o cuartos de la pantalla con un atajo de teclado, o arrastrándola hasta un borde.</p>
+      <p class="actions">
+        <a class="button primary" href="https://github.com/OxDAbit/toc/releases">Descargar toc</a>
+        <a class="button ghost" href="#compilar">Compilar desde el código</a>
+      </p>
+      <p class="requirements">Para macOS 26 o posterior, en Mac con Intel o Apple Silicon. Versión 0.0.1.</p>
+    </div>
+      </div>
+    </div>
+
+    <nav class="panel panel-nav" aria-label="toc">
       <ul class="nav-links">
         <li><a href="#atajos">Atajos</a></li>
         <li><a href="#arrastrar">Arrastrar</a></li>
@@ -53,20 +66,9 @@ Created:  20/11/2026
           <li><a href="en/" hreflang="en" lang="en">English</a></li>
         </ul>
       </details>
-    </div>
-  </nav>
+    </nav>
 
-  <div class="hero-grid">
-    <div class="hero-copy">
-      <h1>Cada ventana, en su sitio.</h1>
-      <p class="lede">toc vive en la barra de menús de tu Mac y coloca la ventana activa en mitades, tercios o cuartos de la pantalla con un atajo de teclado, o arrastrándola hasta un borde.</p>
-      <p class="actions">
-        <a class="button primary" href="https://github.com/OxDAbit/toc/releases">Descargar toc</a>
-        <a class="button ghost" href="#compilar">Compilar desde el código</a>
-      </p>
-      <p class="requirements">Para macOS 26 o posterior, en Mac con Intel o Apple Silicon. Versión 0.0.1.</p>
-    </div>
-
+    <div class="panel panel-demo">
     <figure class="shortcut-demo" data-demo aria-label="Demostración de toc">
       <div class="sd-screen" aria-hidden="true">
         <div class="sd-ghost"></div>
@@ -81,6 +83,7 @@ Created:  20/11/2026
       </figcaption>
       <script type="application/json" class="demo-labels">{"leftHalf": "Mitad izquierda", "rightHalf": "Mitad derecha", "centerHalf": "Mitad central", "topHalf": "Mitad superior", "bottomHalf": "Mitad inferior", "topLeft": "Arriba a la izquierda", "topRight": "Arriba a la derecha", "bottomLeft": "Abajo a la izquierda", "bottomRight": "Abajo a la derecha", "firstThird": "Primer tercio", "centerThird": "Tercio central", "lastThird": "Último tercio", "firstTwoThirds": "Primeros dos tercios", "centerTwoThirds": "Dos tercios centrales", "lastTwoThirds": "Últimos dos tercios", "maximize": "Maximizar", "almostMaximize": "Casi maximizar", "maximizeHeight": "Maximizar altura", "center": "Centrar", "restore": "Restaurar", "_ready": "Listo para probar", "_empty": "No hay ninguna posición anterior"}</script>
     </figure>
+    </div>
   </div>
 </header>
 

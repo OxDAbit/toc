@@ -23,17 +23,30 @@ Created:  20/11/2026
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&family=Sometype+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../assets/style.css?v=10b8e357">
+<link rel="stylesheet" href="../assets/style.css?v=8ec3c9ee">
 <script defer src="../assets/demo.js?v=91f83004"></script>
 </head>
 <body>
 <a class="skip" href="#contenido">Skip to content</a>
 
 <header class="hero">
-  <div class="hero-tiles" aria-hidden="true"><i></i><i></i><i></i></div>
-  <nav class="top" aria-label="toc">
-    <a class="wordmark" href="../"><img src="../assets/toc.svg" alt="" width="36" height="36">toc</a>
-    <div class="top-right">
+  <div class="hero-panels">
+    <div class="panel panel-copy">
+      <div class="copy-column">
+        <a class="wordmark" href="../"><img src="../assets/toc.svg" alt="" width="36" height="36">toc</a>
+        <div class="hero-copy">
+      <h1>Every window, in its place.</h1>
+      <p class="lede">toc lives in your Mac&#x27;s menu bar and moves the active window to halves, thirds or quarters of the screen with a keyboard shortcut, or when you drag it to an edge.</p>
+      <p class="actions">
+        <a class="button primary" href="https://github.com/OxDAbit/toc/releases">Download toc</a>
+        <a class="button ghost" href="#compilar">Build from source</a>
+      </p>
+      <p class="requirements">For macOS 26 or later, on Intel and Apple silicon Macs. Version 0.0.1.</p>
+    </div>
+      </div>
+    </div>
+
+    <nav class="panel panel-nav" aria-label="toc">
       <ul class="nav-links">
         <li><a href="#atajos">Shortcuts</a></li>
         <li><a href="#arrastrar">Drag</a></li>
@@ -53,20 +66,9 @@ Created:  20/11/2026
           <li><a href="./" hreflang="en" lang="en" aria-current="page">English</a></li>
         </ul>
       </details>
-    </div>
-  </nav>
+    </nav>
 
-  <div class="hero-grid">
-    <div class="hero-copy">
-      <h1>Every window, in its place.</h1>
-      <p class="lede">toc lives in your Mac&#x27;s menu bar and moves the active window to halves, thirds or quarters of the screen with a keyboard shortcut, or when you drag it to an edge.</p>
-      <p class="actions">
-        <a class="button primary" href="https://github.com/OxDAbit/toc/releases">Download toc</a>
-        <a class="button ghost" href="#compilar">Build from source</a>
-      </p>
-      <p class="requirements">For macOS 26 or later, on Intel and Apple silicon Macs. Version 0.0.1.</p>
-    </div>
-
+    <div class="panel panel-demo">
     <figure class="shortcut-demo" data-demo aria-label="toc demo">
       <div class="sd-screen" aria-hidden="true">
         <div class="sd-ghost"></div>
@@ -81,6 +83,7 @@ Created:  20/11/2026
       </figcaption>
       <script type="application/json" class="demo-labels">{"leftHalf": "Left half", "rightHalf": "Right half", "centerHalf": "Center half", "topHalf": "Top half", "bottomHalf": "Bottom half", "topLeft": "Top left", "topRight": "Top right", "bottomLeft": "Bottom left", "bottomRight": "Bottom right", "firstThird": "First third", "centerThird": "Center third", "lastThird": "Last third", "firstTwoThirds": "First two thirds", "centerTwoThirds": "Center two thirds", "lastTwoThirds": "Last two thirds", "maximize": "Maximize", "almostMaximize": "Almost maximize", "maximizeHeight": "Maximize height", "center": "Center", "restore": "Restore", "_ready": "Ready to try", "_empty": "There is no previous position"}</script>
     </figure>
+    </div>
   </div>
 </header>
 
