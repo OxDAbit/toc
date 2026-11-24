@@ -25,9 +25,9 @@
 
 Funciona en macOS 26 o posterior, en Mac con Intel o Apple Silicon.
 
-## Veinte posiciones, cada una con su atajo
+## Veintiocho acciones, cada una con su atajo
 
-Son los mismos atajos que usa Rectangle, así que no tienes que aprender nada nuevo. En el menú de toc cada acción lleva un icono que muestra dónde quedará la ventana.
+Por defecto son los mismos atajos que usa Rectangle, así que no tienes que aprender nada nuevo, y puedes cambiarlos en las preferencias. En el menú de toc cada acción lleva un icono que muestra dónde quedará la ventana.
 
 | Mitades | Atajo | Cuartos | Atajo |
 |---|---|---|---|
@@ -45,6 +45,26 @@ Son los mismos atajos que usa Rectangle, así que no tienes que aprender nada nu
 | Primeros dos tercios | `⌃⌥E` | Centrar | `⌃⌥C` |
 | Dos tercios centrales | sin atajo | Restaurar | `⌃⌥⌫` |
 | Últimos dos tercios | `⌃⌥T` | | |
+| Tercio arriba a la izquierda | `⌃⌥⇧U` | | |
+| Tercio central arriba | `⌃⌥⇧I` | | |
+| Tercio arriba a la derecha | `⌃⌥⇧O` | | |
+| Tercio abajo a la izquierda | `⌃⌥⇧J` | | |
+| Tercio central abajo | `⌃⌥⇧K` | | |
+| Tercio abajo a la derecha | `⌃⌥⇧L` | | |
+
+| Pantallas | Atajo |
+|---|---|
+| Pantalla siguiente | `⌃⌥⌘→` |
+| Pantalla anterior | `⌃⌥⌘←` |
+
+Con varias pantallas, la ventana pasa a la siguiente o a la anterior (de izquierda a derecha, volviendo a empezar al llegar al final) y conserva su posición y su tamaño relativos: si ocupaba la mitad izquierda de una pantalla, ocupará la mitad izquierda de la otra.
+
+## Preferencias
+
+En el menú de toc, «Preferencias…» (`⌘,`) abre una ventana con dos pestañas:
+
+- **Atajos:** marca qué acciones aparecen en el menú y haz clic en un atajo para grabar otro. Esc cancela y ⌫ deja la acción sin atajo. Si eliges un atajo que ya usa otra acción, toc se lo quita a la otra y te avisa. Un triángulo naranja indica que otra app ya usa ese atajo.
+- **General:** ajuste al arrastrar a los bordes y apertura al iniciar sesión.
 
 ## Arrastra hasta el borde
 
@@ -56,7 +76,7 @@ Lleva una ventana hasta el borde de la pantalla y toc te enseña dónde va a que
 | Borde superior | Maximizada |
 | Esquinas (40 pt) | Un cuarto de pantalla |
 
-Si estás cambiando el tamaño de una ventana desde su borde, toc no interviene. Puedes desactivar el arrastre en el menú de toc, con «Ajustar al arrastrar a los bordes».
+Si estás cambiando el tamaño de una ventana desde su borde, toc no interviene. Puedes desactivar el arrastre en el menú de toc o en sus preferencias, con «Ajustar al arrastrar a los bordes».
 
 ## No se queda callada después del reposo
 
@@ -96,12 +116,11 @@ Concede a toc el permiso de Accesibilidad cuando te lo pida. Para que se abra al
 
 | Carpeta | Contenido |
 |---|---|
-| `Sources/TocCore` | Lógica pura, sin AppKit: posiciones, coordenadas, zonas de arrastre y detector del fallo de Accesibilidad. |
-| `Sources/toc` | La app: Accesibilidad, Apple Events, atajos, arrastre, menú y ciclo de vida. |
+| `Sources/TocCore` | Lógica pura, sin AppKit: posiciones, pantallas, zonas de arrastre, atajos y preferencias, y detector del fallo de Accesibilidad. |
+| `Sources/toc` | La app: Accesibilidad, Apple Events, atajos, arrastre, menú, ventana de preferencias y ciclo de vida. |
 | `Tests/TocCoreTests` | Tests de `TocCore`. Se ejecutan con `swift test`. |
 | `tools/toc-probe` | Sonda de diagnóstico de Accesibilidad. |
 | `scripts` | Compilación y firma (`build-app.sh`), empaquetado de versiones para GitHub (`package-release.sh`) y generación del icono (`make-icon.swift`). |
-| `docs` | [Notas de desarrollo](docs/notas-desarrollo.md). |
 
 Para publicar una versión, `./scripts/package-release.sh` compila toc, la comprime en `dist/toc-X.Y.Z.zip` desde una copia limpia (iCloud añade atributos que rompen la firma), comprueba la firma tras descomprimirla y guarda la suma SHA-256. No publica nada: al terminar muestra la orden `gh release create` para hacerlo.
 

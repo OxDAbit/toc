@@ -2,9 +2,10 @@
 -------------------------------------------------------------------------------
 Name:     Sources/toc/StatusMenuController.swift
 Purpose:  Icono y menú de toc en la barra de menús: estado de Accesibilidad,
-          acciones con sus atajos, comprobación manual, copia del
-          diagnóstico y salida.
-Version:  v0.0.1
+          acciones visibles con sus atajos (según las preferencias),
+          opciones, preferencias, comprobación manual, copia del diagnóstico
+          y salida.
+Version:  v0.0.2
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -23,12 +24,17 @@ final class StatusMenuController: NSObject {
     private let hotkeyWarning = NSMenuItem()
     private let snapItem = NSMenuItem()
     private let loginItem = NSMenuItem()
+    /// Separador que marca dónde terminan las acciones y empiezan las opciones.
+    private let optionsSeparator = NSMenuItem.separator()
+    /// Elementos de acción que hay ahora en el menú (para poder reconstruirlos).
+    private var actionItems: [NSMenuItem] = []
 
     private let onAction: (WindowAction) -> Void
     private let onToggleSnap: () -> Void
     private let onToggleLogin: () -> Void
     private let onCheck: () -> Void
     private let onCopyDiagnostics: () -> Void
+    private let onPreferences: () -> Void
 
     /**
      * @brief  Crea el icono y el menú.
@@ -38,17 +44,20 @@ final class StatusMenuController: NSObject {
      * @param[in]  onToggleLogin      Se llama al activar o desactivar la apertura al iniciar sesión.
      * @param[in]  onCheck            Se llama al pedir una comprobación de Accesibilidad.
      * @param[in]  onCopyDiagnostics  Se llama al pedir el diagnóstico.
+     * @param[in]  onPreferences      Se llama al abrir las preferencias.
      */
     init(onAction: @escaping (WindowAction) -> Void,
          onToggleSnap: @escaping () -> Void,
          onToggleLogin: @escaping () -> Void,
          onCheck: @escaping () -> Void,
-         onCopyDiagnostics: @escaping () -> Void) {
+         onCopyDiagnostics: @escaping () -> Void,
+         onPreferences: @escaping () -> Void) {
         self.onAction = onAction
         self.onToggleSnap = onToggleSnap
         self.onToggleLogin = onToggleLogin
         self.onCheck = onCheck
         self.onCopyDiagnostics = onCopyDiagnostics
+        self.onPreferences = onPreferences
         super.init()
         buildMenu()
         item.menu = menu
@@ -68,24 +77,7 @@ final class StatusMenuController: NSObject {
         menu.addItem(statusDetail)
         menu.addItem(hotkeyWarning)
 
-        var lastGroup = -1
-        for action in WindowAction.allCases {
-            if action.group != lastGroup {
-                menu.addItem(.separator())
-                lastGroup = action.group
-            }
-            let entry = NSMenuItem(title: action.title, action: #selector(actionSelected(_:)), keyEquivalent: "")
-            entry.target = self
-            entry.representedObject = action.rawValue
-            entry.image = MenuIcon.image(for: action)
-            if let shortcut = action.defaultShortcut {
-                entry.keyEquivalent = Self.keyEquivalent(shortcut.key)
-                entry.keyEquivalentModifierMask = Self.modifierMask(shortcut.modifiers)
-            }
-            menu.addItem(entry)
-        }
-
-        menu.addItem(.separator())
+        menu.addItem(optionsSeparator)
         snapItem.title = "Ajustar al arrastrar a los bordes"
         snapItem.action = #selector(snapSelected)
         snapItem.target = self
@@ -94,6 +86,10 @@ final class StatusMenuController: NSObject {
         loginItem.action = #selector(loginSelected)
         loginItem.target = self
         menu.addItem(loginItem)
+        let preferences = NSMenuItem(title: "Preferencias…", action: #selector(preferencesSelected),
+                                     keyEquivalent: ",")
+        preferences.target = self
+        menu.addItem(preferences)
 
         menu.addItem(.separator())
         let check = NSMenuItem(title: "Comprobar Accesibilidad", action: #selector(checkSelected), keyEquivalent: "")
@@ -104,6 +100,38 @@ final class StatusMenuController: NSObject {
         menu.addItem(copy)
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Salir de toc", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+    }
+
+    /**
+     * @brief  Vuelve a crear las acciones del menú según las preferencias.
+     *
+     * Solo aparecen las acciones visibles, agrupadas con separadores y con su
+     * atajo vigente.
+     *
+     * @param[in]  preferences  Preferencias de atajos y visibilidad.
+     */
+    func rebuildActions(_ preferences: TocPreferences) {
+        actionItems.forEach(menu.removeItem)
+        actionItems.removeAll()
+        var index = menu.index(of: optionsSeparator)
+        var lastGroup = -1
+        for action in WindowAction.allCases where preferences.isVisible(action) {
+            if action.group != lastGroup {
+                let separator = NSMenuItem.separator()
+                menu.insertItem(separator, at: index)
+                actionItems.append(separator)
+                index += 1
+                lastGroup = action.group
+            }
+            let entry = NSMenuItem(title: action.title, action: #selector(actionSelected(_:)), keyEquivalent: "")
+            entry.target = self
+            entry.representedObject = action.rawValue
+            entry.image = MenuIcon.image(for: action)
+            KeyEquivalent.apply(preferences.shortcut(for: action), to: entry)
+            menu.insertItem(entry, at: index)
+            actionItems.append(entry)
+            index += 1
+        }
     }
 
     /**
@@ -202,37 +230,9 @@ final class StatusMenuController: NSObject {
     }
 
     /**
-     * @brief  Convierte una tecla en el carácter que NSMenuItem usa para mostrarla.
-     *
-     * @param[in]  key  Tecla del atajo.
-     * @return Carácter de equivalente de teclado.
+     * @brief  Atiende la petición de abrir las preferencias.
      */
-    private static func keyEquivalent(_ key: Shortcut.Key) -> String {
-        let scalar: Int
-        switch key {
-        case .leftArrow: scalar = NSLeftArrowFunctionKey
-        case .rightArrow: scalar = NSRightArrowFunctionKey
-        case .upArrow: scalar = NSUpArrowFunctionKey
-        case .downArrow: scalar = NSDownArrowFunctionKey
-        case .returnKey: return "\r"
-        case .delete: return "\u{8}"
-        default: return key.symbol.lowercased()
-        }
-        return String(Character(UnicodeScalar(scalar)!))
-    }
-
-    /**
-     * @brief  Convierte los modificadores al formato de NSMenuItem.
-     *
-     * @param[in]  modifiers  Modificadores del atajo.
-     * @return Máscara de modificadores de AppKit.
-     */
-    private static func modifierMask(_ modifiers: Shortcut.Modifiers) -> NSEvent.ModifierFlags {
-        var mask: NSEvent.ModifierFlags = []
-        if modifiers.contains(.control) { mask.insert(.control) }
-        if modifiers.contains(.option) { mask.insert(.option) }
-        if modifiers.contains(.shift) { mask.insert(.shift) }
-        if modifiers.contains(.command) { mask.insert(.command) }
-        return mask
+    @objc private func preferencesSelected() {
+        onPreferences()
     }
 }

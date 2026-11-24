@@ -5,7 +5,7 @@ Purpose:  Iconos del menú dibujados por código: una pantalla en miniatura con
           la zona de destino de cada acción rellena en azul. La zona sale del
           propio LayoutEngine, así que el icono siempre coincide con lo que
           hace la acción. También genera una hoja de muestra en PNG.
-Version:  v0.0.1
+Version:  v0.0.2
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -68,9 +68,9 @@ enum MenuIcon {
         NSColor.tertiaryLabelColor.withAlphaComponent(0.18).setFill()
         screen.fill()
 
-        if action == .restore {
+        if let symbol = symbolName(for: action) {
             NSGraphicsContext.restoreGraphicsState()
-            drawRestoreArrow(in: screen)
+            drawSymbol(symbol, in: screen)
         } else if let target = LayoutEngine.frame(for: action, window: sampleWindow, visible: canvas) {
             var zone = CGRect(x: screen.minX + target.minX / canvas.width * screen.width,
                               y: screen.minY + target.minY / canvas.height * screen.height,
@@ -92,14 +92,30 @@ enum MenuIcon {
     }
 
     /**
-     * @brief  Dibuja la flecha de «Restaurar» en el centro del icono.
+     * @brief  Devuelve el símbolo de las acciones que no se dibujan como una zona.
      *
+     * @param[in]  action  Acción representada.
+     * @return Nombre del símbolo SF, o nil si la acción se dibuja como zona.
+     */
+    private static func symbolName(for action: WindowAction) -> String? {
+        switch action {
+        case .restore: "arrow.uturn.backward"
+        case .nextDisplay: "arrow.right"
+        case .previousDisplay: "arrow.left"
+        default: nil
+        }
+    }
+
+    /**
+     * @brief  Dibuja un símbolo SF en azul en el centro del icono.
+     *
+     * @param[in]  name  Nombre del símbolo.
      * @param[in]  rect  Zona interior del icono.
      */
-    private static func drawRestoreArrow(in rect: CGRect) {
+    private static func drawSymbol(_ name: String, in rect: CGRect) {
         let configuration = NSImage.SymbolConfiguration(pointSize: 8, weight: .bold)
             .applying(NSImage.SymbolConfiguration(paletteColors: [accent]))
-        guard let symbol = NSImage(systemSymbolName: "arrow.uturn.backward", accessibilityDescription: nil)?
+        guard let symbol = NSImage(systemSymbolName: name, accessibilityDescription: nil)?
             .withSymbolConfiguration(configuration) else { return }
         let symbolSize = symbol.size
         let origin = CGPoint(x: rect.midX - symbolSize.width / 2, y: rect.midY - symbolSize.height / 2)
