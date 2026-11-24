@@ -4,7 +4,7 @@
 #           inglés (en/index.html) a partir de una única plantilla, con los
 #           iconos de cada acción calculados igual que en LayoutEngine.
 #           Uso: python3 tools/build.py (desde la raíz de la rama gh-pages).
-# Version:  v0.0.1
+# Version:  v0.0.2
 # Author:   David Alvarez Medina aka 0xDA_bit
 # Created:  20/11/2026
 # -------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO = "https://github.com/OxDAbit/toc"
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 # Acciones en el orden y los grupos del menú de toc, con su atajo por defecto.
 # Cada tupla: (id, grupo, atajo o None, nombre es, nombre en).
@@ -36,11 +36,19 @@ ACTIONS = [
     ("firstTwoThirds", 2, "⌃⌥E", "Primeros dos tercios", "First two thirds"),
     ("centerTwoThirds", 2, None, "Dos tercios centrales", "Center two thirds"),
     ("lastTwoThirds", 2, "⌃⌥T", "Últimos dos tercios", "Last two thirds"),
+    ("topLeftSixth", 2, "⌃⌥⇧U", "Tercio arriba a la izquierda", "Top left sixth"),
+    ("topCenterSixth", 2, "⌃⌥⇧I", "Tercio central arriba", "Top center sixth"),
+    ("topRightSixth", 2, "⌃⌥⇧O", "Tercio arriba a la derecha", "Top right sixth"),
+    ("bottomLeftSixth", 2, "⌃⌥⇧J", "Tercio abajo a la izquierda", "Bottom left sixth"),
+    ("bottomCenterSixth", 2, "⌃⌥⇧K", "Tercio central abajo", "Bottom center sixth"),
+    ("bottomRightSixth", 2, "⌃⌥⇧L", "Tercio abajo a la derecha", "Bottom right sixth"),
     ("maximize", 3, "⌃⌥↩", "Maximizar", "Maximize"),
     ("almostMaximize", 3, None, "Casi maximizar", "Almost maximize"),
     ("maximizeHeight", 3, "⌃⌥⇧↑", "Maximizar altura", "Maximize height"),
     ("center", 3, "⌃⌥C", "Centrar", "Center"),
     ("restore", 3, "⌃⌥⌫", "Restaurar", "Restore"),
+    ("nextDisplay", 4, "⌃⌥⌘→", "Pantalla siguiente", "Next display"),
+    ("previousDisplay", 4, "⌃⌥⌘←", "Pantalla anterior", "Previous display"),
 ]
 
 # Acciones que se pueden probar con los botones de la demo.
@@ -56,7 +64,7 @@ DEMO_KEYS = ["leftHalf", "rightHalf", "topHalf", "bottomHalf", "topLeft", "topRi
 #  @param[in]  action  Identificador de la acción (str).
 #  @param[in]  win     Marco actual (x, y, ancho, alto) como tupla de float.
 #  @param[in]  vis     Zona útil (x, y, ancho, alto) como tupla de float.
-#  @return Tupla (x, y, ancho, alto), o None para "restore".
+#  @return Tupla (x, y, ancho, alto), o None para "restore" y las acciones de pantalla.
 def zone(action, win, vis):
     x, y, w, h = vis
     hw, hh, tw = w / 2, h / 2, w / 3
@@ -69,6 +77,9 @@ def zone(action, win, vis):
         "centerThird": (x + tw, y, tw, h), "lastThird": (x + 2 * tw, y, tw, h),
         "firstTwoThirds": (x, y, 2 * tw, h), "centerTwoThirds": (x + tw / 2, y, 2 * tw, h),
         "lastTwoThirds": (x + tw, y, 2 * tw, h), "maximize": (x, y, w, h),
+        "topLeftSixth": (x, y, tw, hh), "topCenterSixth": (x + tw, y, tw, hh),
+        "topRightSixth": (x + 2 * tw, y, tw, hh), "bottomLeftSixth": (x, y + hh, tw, hh),
+        "bottomCenterSixth": (x + tw, y + hh, tw, hh), "bottomRightSixth": (x + 2 * tw, y + hh, tw, hh),
         "almostMaximize": (x + w * .05, y + h * .05, w * .9, h * .9),
         "maximizeHeight": (win[0], y, win[2], h),
         "center": (x + (w - min(win[2], w)) / 2, y + (h - min(win[3], h)) / 2,
@@ -85,8 +96,13 @@ def icon(action):
     sx, sy, sw, sh = 1.0, 1.5, 20.0, 13.0
     uid = f"c{next(_icon_ids)}"
     body = ""
-    if action == "restore":
-        body = ('<path class="i-arrow" d="M8.6 6.2 6.4 8.2l2.2 2M6.6 8.2h6.2a2.4 2.4 0 0 1 0 4.8h-1.6"/>')
+    arrows = {
+        "restore": "M8.6 6.2 6.4 8.2l2.2 2M6.6 8.2h6.2a2.4 2.4 0 0 1 0 4.8h-1.6",
+        "nextDisplay": "M7 8h8M12.4 5.4 15 8l-2.6 2.6",
+        "previousDisplay": "M15 8H7M9.6 5.4 7 8l2.6 2.6",
+    }
+    if action in arrows:
+        body = f'<path class="i-arrow" d="{arrows[action]}"/>'
     else:
         if action == "almostMaximize":
             zx, zy, zw, zh = sx + 2.5, sy + 2.5, sw - 5, sh - 5
@@ -98,8 +114,8 @@ def icon(action):
     return (f'<svg class="icon" viewBox="0 0 22 16" aria-hidden="true">'
             f'<defs><clipPath id="{uid}"><rect x="{sx}" y="{sy}" width="{sw}" height="{sh}" rx="2.5"/></clipPath></defs>'
             f'<g clip-path="url(#{uid})"><rect class="i-bg" x="{sx}" y="{sy}" width="{sw}" height="{sh}"/>'
-            f'{body if action != "restore" else ""}</g>'
-            f'{body if action == "restore" else ""}'
+            f'{body if action not in arrows else ""}</g>'
+            f'{body if action in arrows else ""}'
             f'<rect class="i-frame" x="{sx}" y="{sy}" width="{sw}" height="{sh}" rx="2.5"/></svg>')
 
 
@@ -128,9 +144,10 @@ TEXT = {
         "demo_window": "Notas",
         "demo_ready": "Listo para probar",
         "demo_restore_empty": "No hay ninguna posición anterior",
-        "shortcuts_h2": "Veinte posiciones, cada una con su atajo",
-        "shortcuts_p": "Son los mismos atajos que usa Rectangle, así que no tienes que aprender nada nuevo. "
-                       "En el menú de toc cada acción lleva un icono que muestra dónde quedará la ventana.",
+        "shortcuts_h2": "Veintiocho acciones, cada una con su atajo",
+        "shortcuts_p": "Por defecto son los mismos atajos que usa Rectangle, así que no tienes que aprender nada "
+                       "nuevo, y puedes cambiarlos en las preferencias. En el menú de toc cada acción lleva un "
+                       "icono que muestra dónde quedará la ventana.",
         "shortcuts_none": "sin atajo",
         "drag_h2": "Arrastra hasta el borde",
         "drag_p": "Lleva una ventana hasta el borde de la pantalla y toc te enseña dónde va a quedar. "
@@ -140,6 +157,15 @@ TEXT = {
         "drag_corner": "Esquinas", "drag_corner_d": "un cuarto de pantalla",
         "drag_note": "Si estás cambiando el tamaño de una ventana desde su borde, toc no interviene.",
         "drag_svg_top": "maximizar", "drag_svg_side": "mitad", "drag_svg_corner": "cuarto",
+        "prefs_h2": "A tu manera",
+        "prefs_p": "Abre las preferencias con ⌘, desde el menú de toc y ajústala a tu forma de trabajar.",
+        "prefs_items": [
+            ("Atajos", "Haz clic en un atajo y pulsa el nuevo. Si ya lo usaba otra acción, toc se lo quita y te avisa. "
+                       "Los atajos se muestran con tu distribución de teclado."),
+            ("Menú", "Elige qué acciones aparecen en el menú; las ocultas siguen funcionando con su atajo."),
+            ("Pantallas", "Con varias pantallas, ⌃⌥⌘→ y ⌃⌥⌘← llevan la ventana a la siguiente o a la anterior "
+                          "y conservan su posición y su tamaño relativos."),
+        ],
         "sleep_h2": "No se queda callada después del reposo",
         "sleep_p": "En algunos Mac con macOS 26, al salir del reposo, macOS deja de dar acceso a las ventanas "
                    "a las apps de Accesibilidad. Los gestores de ventanas dejan de responder sin explicar por qué, "
@@ -162,12 +188,13 @@ TEXT = {
         "src_steps": ["Clona el repositorio:", "Entra en la carpeta:", "Compila e instala:", "Abre toc:"],
         "after_h3": "Después de instalar",
         "after_p": "Concede a toc el permiso de Accesibilidad cuando te lo pida. Para que se abra al encender el Mac, "
-                   "marca «Abrir al iniciar sesión» en su menú.",
+                   "marca «Abrir al iniciar sesión» en su menú o en las preferencias.",
         "footer_meta": "toc v" + VERSION + " with ❤️ by 0xDA_bit",
         "code": "Código en GitHub",
         "skip": "Saltar al contenido",
         "lang_label": "Idioma",
-        "nav_shortcuts": "Atajos", "nav_drag": "Arrastrar", "nav_sleep": "Reposo", "nav_install": "Instalar",
+        "nav_shortcuts": "Atajos", "nav_prefs": "Preferencias", "nav_drag": "Arrastrar", "nav_sleep": "Reposo",
+        "nav_install": "Instalar",
     },
     "en": {
         "lang": "en", "path": "../", "other_href": "../", "other_lang": "es", "other": "Español",
@@ -184,9 +211,10 @@ TEXT = {
         "demo_window": "Notes",
         "demo_ready": "Ready to try",
         "demo_restore_empty": "There is no previous position",
-        "shortcuts_h2": "Twenty positions, each with its shortcut",
-        "shortcuts_p": "They are the same shortcuts Rectangle uses, so there is nothing new to learn. "
-                       "In toc's menu every action has an icon that shows where the window will go.",
+        "shortcuts_h2": "Twenty-eight actions, each with its shortcut",
+        "shortcuts_p": "By default they are the same shortcuts Rectangle uses, so there is nothing new to learn, "
+                       "and you can change them in the settings. In toc's menu every action has an icon that "
+                       "shows where the window will go.",
         "shortcuts_none": "no shortcut",
         "drag_h2": "Drag it to the edge",
         "drag_p": "Take a window to the edge of the screen and toc shows you where it will land. "
@@ -196,6 +224,15 @@ TEXT = {
         "drag_corner": "Corners", "drag_corner_d": "a quarter of the screen",
         "drag_note": "When you resize a window from its edge, toc stays out of the way.",
         "drag_svg_top": "maximize", "drag_svg_side": "half", "drag_svg_corner": "quarter",
+        "prefs_h2": "Your way",
+        "prefs_p": "Open the settings with ⌘, from toc's menu and fit it to the way you work.",
+        "prefs_items": [
+            ("Shortcuts", "Click a shortcut and press the new one. If another action was using it, toc takes it "
+                          "away and tells you. Shortcuts follow your keyboard layout."),
+            ("Menu", "Choose which actions appear in the menu; hidden ones still work with their shortcut."),
+            ("Displays", "With more than one display, ⌃⌥⌘→ and ⌃⌥⌘← move the window to the next or previous "
+                         "one and keep its relative position and size."),
+        ],
         "sleep_h2": "It doesn't go quiet after sleep",
         "sleep_p": "On some Macs running macOS 26, after waking from sleep, macOS stops giving Accessibility apps "
                    "access to windows. Window managers stop responding without saying why, and only a restart "
@@ -218,12 +255,13 @@ TEXT = {
         "src_steps": ["Clone the repository:", "Go into the folder:", "Build and install:", "Open toc:"],
         "after_h3": "After installing",
         "after_p": "Give toc the Accessibility permission when it asks. To open it when your Mac starts, "
-                   "check “Open at login” in its menu.",
+                   "check “Open at login” in its menu or in the settings.",
         "footer_meta": "toc v" + VERSION + " with ❤️ by 0xDA_bit",
         "code": "Code on GitHub",
         "skip": "Skip to content",
         "lang_label": "Language",
-        "nav_shortcuts": "Shortcuts", "nav_drag": "Drag", "nav_sleep": "Sleep", "nav_install": "Install",
+        "nav_shortcuts": "Shortcuts", "nav_prefs": "Settings", "nav_drag": "Drag", "nav_sleep": "Sleep",
+        "nav_install": "Install",
     },
 }
 
@@ -308,6 +346,8 @@ def page(lang):
     labels["_ready"] = t["demo_ready"]
     labels["_empty"] = t["demo_restore_empty"]
     labels_init = html.escape(labels["rightHalf"])
+    prefs_items = "".join(f"<div><dt>{html.escape(term)}</dt><dd>{html.escape(text)}</dd></div>"
+                          for term, text in t["prefs_items"])
     sleep_steps = "".join(f"<li>{html.escape(s)}</li>" for s in t["sleep_steps"])
     src_steps = "".join(f"<li>{html.escape(label)}<pre><code>{html.escape(cmd)}</code></pre></li>"
                         for label, cmd in zip(t["src_steps"], COMMANDS))
@@ -318,7 +358,7 @@ def page(lang):
 Name:     {"index.html" if lang == "es" else "en/index.html"}
 Purpose:  Web de presentación de toc ({"castellano" if lang == "es" else "inglés"}). Generada por
           tools/build.py: no se edita a mano.
-Version:  v0.0.1
+Version:  v{VERSION}
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -363,6 +403,7 @@ Created:  20/11/2026
     <nav class="panel panel-nav" aria-label="toc">
       <ul class="nav-links">
         <li><a href="#atajos">{t["nav_shortcuts"]}</a></li>
+        <li><a href="#preferencias">{t["nav_prefs"]}</a></li>
         <li><a href="#arrastrar">{t["nav_drag"]}</a></li>
         <li><a href="#reposo">{t["nav_sleep"]}</a></li>
         <li><a href="#instalar">{t["nav_install"]}</a></li>
@@ -408,6 +449,14 @@ Created:  20/11/2026
       <p>{html.escape(t["shortcuts_p"])}</p>
     </div>
     <div class="menu">{shortcut_groups(t, lang)}</div>
+  </section>
+
+  <section id="preferencias" class="section">
+    <div class="section-head">
+      <h2>{t["prefs_h2"]}</h2>
+      <p>{html.escape(t["prefs_p"])}</p>
+    </div>
+    <dl class="zones">{prefs_items}</dl>
   </section>
 
   <section id="arrastrar" class="section split">
