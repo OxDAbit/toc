@@ -4,7 +4,7 @@ Name:     assets/style.css
 Purpose:  Estilos de la web de toc. Idea: la portada en azul petróleo,
           organizada como un escritorio con ventanas en mosaico;
           el resto de la página es papel claro (u oscuro, según el sistema).
-Version:  v0.0.1
+Version:  v0.0.2
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -170,7 +170,7 @@ kbd {
 .nav-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1.5rem;
+  gap: 0.25rem clamp(0.9rem, 1.5vw, 1.5rem);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -178,6 +178,7 @@ kbd {
   font-size: 0.95rem;
   line-height: 1;
 }
+.nav-links li { white-space: nowrap; }
 .nav-links a { text-decoration: none; opacity: 0.85; }
 .nav-links a:hover { opacity: 1; text-decoration: underline; }
 
@@ -508,6 +509,13 @@ pre {
 .brand-mark { display: inline-block; }
 
 /* ---------- Pantallas estrechas ---------- */
+
+/* Con dos columnas, el panel de navegación es estrecho: se compacta para que
+   los cinco enlaces y el selector de idioma quepan en una línea. */
+@media (min-width: 861px) and (max-width: 1060px) {
+  .nav-links { gap: 0.25rem 0.75rem; font-size: 0.84rem; }
+  .panel-nav { padding-inline: 18px; gap: 0.75rem; }
+}
 
 @media (max-width: 860px) {
   .menu { grid-template-columns: minmax(0, 1fr); }
