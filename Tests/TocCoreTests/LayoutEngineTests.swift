@@ -3,7 +3,7 @@
 Name:     Tests/TocCoreTests/LayoutEngineTests.swift
 Purpose:  Tests del motor de posiciones con la geometría real del monitor
           C34H89x (3440×1440, zona útil 3440×1352 bajo la barra de menús).
-Version:  v0.0.1
+Version:  v0.0.2
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -61,6 +61,25 @@ final class LayoutEngineTests: XCTestCase {
         XCTAssertLessThanOrEqual(last.minX, center.maxX)
         XCTAssertEqual(last.maxX, visible.maxX)
         XCTAssertEqual(try XCTUnwrap(frame(.firstTwoThirds)).maxX, center.maxX)
+    }
+
+    /**
+     * @brief  Comprueba los tercios de media altura: rejilla de 3 × 2 sin huecos.
+     */
+    func testSixths() throws {
+        XCTAssertEqual(frame(.topLeftSixth), CGRect(x: 0, y: 30, width: 1147, height: 676))
+        XCTAssertEqual(frame(.bottomRightSixth), CGRect(x: 2293, y: 706, width: 1147, height: 676))
+        let top = try [WindowAction.topLeftSixth, .topCenterSixth, .topRightSixth].map { try XCTUnwrap(frame($0)) }
+        let bottom = try [WindowAction.bottomLeftSixth, .bottomCenterSixth, .bottomRightSixth].map { try XCTUnwrap(frame($0)) }
+        for row in [top, bottom] {
+            XCTAssertEqual(row[0].minX, visible.minX)
+            XCTAssertLessThanOrEqual(row[1].minX, row[0].maxX)
+            XCTAssertLessThanOrEqual(row[2].minX, row[1].maxX)
+            XCTAssertEqual(row[2].maxX, visible.maxX)
+        }
+        XCTAssertLessThanOrEqual(bottom[0].minY, top[0].maxY)
+        XCTAssertEqual(bottom[0].maxY, visible.maxY)
+        XCTAssertEqual(WindowAction.topRightSixth.defaultShortcut?.display, "⌃⌥⇧O")
     }
 
     /**

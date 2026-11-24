@@ -4,8 +4,9 @@ Name:     Sources/toc/WindowMover.swift
 Purpose:  Orquesta cada acción: localiza la ventana activa, elige la pantalla,
           calcula el destino con LayoutEngine y lo aplica por Accesibilidad.
           Si AX falla (por ejemplo, tras el reposo) y la app es scriptable,
-          recurre a Apple Events. Guarda el historial para «Restaurar».
-Version:  v0.0.1
+          recurre a Apple Events. Guarda el historial para «Restaurar» y
+          lleva ventanas a la pantalla siguiente o anterior.
+Version:  v0.0.2
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -42,6 +43,18 @@ struct ScreenInfo {
                        visible: ScreenGeometry.topLeft(fromCocoa: $0.visibleFrame, primaryHeight: primaryHeight))
         }
     }
+}
+
+/// Motivo por el que una acción no tiene destino.
+private struct MoveRefusal: Error {
+    let message: String
+
+    /**
+     * @brief  Crea el motivo.
+     *
+     * @param[in]  message  Texto que se registra y se muestra.
+     */
+    init(_ message: String) { self.message = message }
 }
 
 /// Ventana que se va a mover y forma de moverla.
@@ -84,8 +97,10 @@ final class WindowMover {
         }
 
         for window in candidates {
-            guard let destination = destination(for: action, window: window) else {
-                return .notMoved("no hay una posición anterior que restaurar")
+            let destination: CGRect
+            switch self.destination(for: action, window: window) {
+            case .success(let frame): destination = frame
+            case .failure(let reason): return .notMoved(reason.message)
             }
             if action != .restore, let id = window.id, history[id] == nil {
                 history[id] = window.frame
@@ -106,17 +121,35 @@ final class WindowMover {
      *
      * @param[in]  action  Acción solicitada.
      * @param[in]  window  Ventana a mover.
-     * @return Marco de destino, o nil si es «Restaurar» y no hay historial.
+     * @return Marco de destino, o el motivo por el que no hay ninguno.
      */
-    private func destination(for action: WindowAction, window: MovableWindow) -> CGRect? {
+    private func destination(for action: WindowAction, window: MovableWindow) -> Result<CGRect, MoveRefusal> {
         if action == .restore {
-            return window.id.flatMap { history[$0] }
+            guard let frame = window.id.flatMap({ history[$0] }) else {
+                return .failure(MoveRefusal("no hay una posición anterior que restaurar"))
+            }
+            return .success(frame)
         }
         let screens = ScreenInfo.current()
         guard let index = ScreenGeometry.screenIndex(for: window.frame, screens: screens.map(\.frame)) else {
-            return nil
+            return .failure(MoveRefusal("no se encuentra la pantalla de la ventana"))
         }
-        return LayoutEngine.frame(for: action, window: window.frame, visible: screens[index].visible)
+        switch action {
+        case .nextDisplay, .previousDisplay:
+            let direction: ScreenDirection = action == .nextDisplay ? .next : .previous
+            guard let target = ScreenGeometry.adjacentIndex(from: index, screens: screens.map(\.frame),
+                                                            direction: direction) else {
+                return .failure(MoveRefusal("solo hay una pantalla"))
+            }
+            return .success(ScreenGeometry.transfer(window.frame, from: screens[index].visible,
+                                                    to: screens[target].visible))
+        default:
+            guard let frame = LayoutEngine.frame(for: action, window: window.frame,
+                                                 visible: screens[index].visible) else {
+                return .failure(MoveRefusal("la acción no tiene posición de destino"))
+            }
+            return .success(frame)
+        }
     }
 
     /**

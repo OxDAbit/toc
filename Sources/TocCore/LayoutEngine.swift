@@ -4,7 +4,7 @@ Name:     Sources/TocCore/LayoutEngine.swift
 Purpose:  Cálculo puro del marco de destino de cada acción. Trabaja en el
           sistema de coordenadas de Accesibilidad y WindowServer (origen
           arriba a la izquierda de la pantalla principal, eje Y hacia abajo).
-Version:  v0.0.1
+Version:  v0.0.2
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -23,8 +23,9 @@ public enum LayoutEngine {
      * @param[in]  action   Acción solicitada.
      * @param[in]  window   Marco actual de la ventana.
      * @param[in]  visible  Zona útil de la pantalla (sin barra de menús ni Dock).
-     * @return Marco de destino redondeado a puntos enteros, o nil para .restore,
-     *         que depende del historial y no de la geometría.
+     * @return Marco de destino redondeado a puntos enteros, o nil para .restore
+     *         (depende del historial) y para las acciones de pantalla (dependen
+     *         de las demás pantallas; ver ScreenGeometry.transfer).
      */
     public static func frame(for action: WindowAction, window: CGRect, visible: CGRect) -> CGRect? {
         let v = visible
@@ -47,6 +48,12 @@ public enum LayoutEngine {
         case .firstTwoThirds: rect = CGRect(x: v.minX, y: v.minY, width: 2 * thirdW, height: v.height)
         case .centerTwoThirds: rect = CGRect(x: v.minX + thirdW / 2, y: v.minY, width: 2 * thirdW, height: v.height)
         case .lastTwoThirds: rect = CGRect(x: v.minX + thirdW, y: v.minY, width: 2 * thirdW, height: v.height)
+        case .topLeftSixth: rect = CGRect(x: v.minX, y: v.minY, width: thirdW, height: halfH)
+        case .topCenterSixth: rect = CGRect(x: v.minX + thirdW, y: v.minY, width: thirdW, height: halfH)
+        case .topRightSixth: rect = CGRect(x: v.minX + 2 * thirdW, y: v.minY, width: thirdW, height: halfH)
+        case .bottomLeftSixth: rect = CGRect(x: v.minX, y: v.minY + halfH, width: thirdW, height: halfH)
+        case .bottomCenterSixth: rect = CGRect(x: v.minX + thirdW, y: v.minY + halfH, width: thirdW, height: halfH)
+        case .bottomRightSixth: rect = CGRect(x: v.minX + 2 * thirdW, y: v.minY + halfH, width: thirdW, height: halfH)
         case .maximize: rect = v
         case .almostMaximize:
             let w = v.width * almostMaximizeRatio, h = v.height * almostMaximizeRatio
@@ -55,7 +62,7 @@ public enum LayoutEngine {
         case .center:
             let w = min(window.width, v.width), h = min(window.height, v.height)
             rect = CGRect(x: v.midX - w / 2, y: v.midY - h / 2, width: w, height: h)
-        case .restore:
+        case .restore, .nextDisplay, .previousDisplay:
             return nil
         }
         return rounded(rect)

@@ -4,7 +4,7 @@ Name:     Sources/toc/HotkeyService.swift
 Purpose:  Atajos de teclado globales con Carbon (RegisterEventHotKey), que no
           necesitan leer todo el teclado y siguen funcionando con la Entrada
           Segura activa. Se vuelven a registrar al despertar del reposo.
-Version:  v0.0.1
+Version:  v0.0.2
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -13,8 +13,9 @@ Created:  20/11/2026
 import Carbon
 import TocCore
 
-/// Atajo con su nombre (para los avisos) y lo que ejecuta.
+/// Atajo con su identificador, su nombre (para los avisos) y lo que ejecuta.
 struct HotkeyBinding {
+    let id: String
     let shortcut: Shortcut
     let name: String
     let action: @MainActor () -> Void
@@ -34,6 +35,8 @@ final class HotkeyService {
     private var bindings: [HotkeyBinding] = []
     /// Atajos que no se pudieron registrar (normalmente, ocupados por otra app).
     private(set) var failed: [String] = []
+    /// Identificadores de los atajos que no se pudieron registrar.
+    private(set) var failedIDs: Set<String> = []
 
     /**
      * @brief  Instala el manejador de eventos de Carbon.
@@ -65,14 +68,15 @@ final class HotkeyService {
         for (index, binding) in bindings.enumerated() {
             let id = EventHotKeyID(signature: Self.signature, id: UInt32(index + 1))
             var ref: EventHotKeyRef?
-            let status = RegisterEventHotKey(binding.shortcut.key.rawValue, binding.shortcut.modifiers.carbonFlags,
+            let status = RegisterEventHotKey(binding.shortcut.keyCode, binding.shortcut.modifiers.carbonFlags,
                                              id, GetApplicationEventTarget(), 0, &ref)
             if status == noErr, let ref {
                 refs.append(ref)
                 actions[id.id] = binding.action
             } else {
-                failed.append("\(binding.name) (\(binding.shortcut.display))")
-                Log.hotkeys.error("Atajo no disponible \(binding.shortcut.display): \(status)")
+                failed.append("\(binding.name) (\(KeyEquivalent.display(binding.shortcut)))")
+                failedIDs.insert(binding.id)
+                Log.hotkeys.error("Atajo no disponible \(KeyEquivalent.display(binding.shortcut)): \(status)")
             }
         }
         Log.hotkeys.info("Atajos registrados: \(self.refs.count), fallidos: \(self.failed.count)")
@@ -86,6 +90,7 @@ final class HotkeyService {
         refs.removeAll()
         actions.removeAll()
         failed.removeAll()
+        failedIDs.removeAll()
     }
 
     /**

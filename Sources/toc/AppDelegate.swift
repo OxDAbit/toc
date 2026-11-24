@@ -2,9 +2,9 @@
 -------------------------------------------------------------------------------
 Name:     Sources/toc/AppDelegate.swift
 Purpose:  Arranque y coordinación de toc: permiso de Accesibilidad, menú,
-          atajos, comprobaciones de salud al despertar y avisos al usuario
-          cuando macOS pierde el acceso a las ventanas.
-Version:  v0.0.1
+          preferencias, atajos, comprobaciones de salud al despertar y avisos
+          al usuario cuando macOS pierde el acceso a las ventanas.
+Version:  v0.0.2
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -21,12 +21,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let hotkeys = HotkeyService()
     private let lifecycle = LifecycleMonitor()
     private lazy var snap = SnapController { [weak self] action in self?.run(action) }
+    private let store = PreferencesStore()
+    private lazy var preferencesWindow = PreferencesWindowController(store: store)
     private var menu: StatusMenuController?
+    /// Observador del cambio de distribución de teclado.
+    private var keyboardObserver: NSObjectProtocol?
     /// Evita repetir el aviso del fallo mientras dura el mismo episodio.
     private var brokenAlertShown = false
-
-    /// Clave de preferencias del ajuste al arrastrar (activo por defecto).
-    private let snapDefaultsKey = "snapToEdges"
 
     /// Segundos que se espera tras despertar antes de comprobar Accesibilidad.
     private let wakeCheckDelay: Duration = .seconds(3)
@@ -44,39 +45,91 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             onToggleSnap: { [weak self] in self?.toggleSnap() },
             onToggleLogin: { [weak self] in self?.toggleLogin() },
             onCheck: { [weak self] in self?.health.check() },
-            onCopyDiagnostics: { [weak self] in self?.copyDiagnostics() }
+            onCopyDiagnostics: { [weak self] in self?.copyDiagnostics() },
+            onPreferences: { [weak self] in self?.preferencesWindow.show() }
         )
         health.onChange = { [weak self] state in self?.healthChanged(state) }
 
-        hotkeys.register(WindowAction.allCases.compactMap { action in
-            action.defaultShortcut.map { shortcut in
-                HotkeyBinding(shortcut: shortcut, name: action.title) { [weak self] in self?.run(action) }
-            }
-        })
-        menu?.update(failedHotkeys: hotkeys.failed)
+        store.onShortcutsChange = { [weak self] in self?.shortcutsChanged() }
+        store.onSnapChange = { [weak self] enabled in
+            self?.snap.isEnabled = enabled
+            self?.refreshOptions()
+        }
+        store.onRecordingChange = { [weak self] recording in self?.recordingChanged(recording) }
 
-        UserDefaults.standard.register(defaults: [snapDefaultsKey: true])
-        snap.isEnabled = UserDefaults.standard.bool(forKey: snapDefaultsKey)
+        snap.isEnabled = store.snapEnabled
+        shortcutsChanged()
         refreshOptions()
 
         lifecycle.start { [weak self] event in self?.systemEvent(event) }
+        keyboardObserver = DistributedNotificationCenter.default().addObserver(
+            forName: Notification.Name("com.apple.Carbon.TISNotifySelectedKeyboardInputSourceChanged"),
+            object: nil, queue: .main) { [weak self] _ in
+                MainActor.assumeIsolated { self?.keyboardLayoutChanged() }
+            }
         health.check()
     }
 
     /**
-     * @brief  Activa o desactiva el ajuste al arrastrar y lo guarda en las preferencias.
+     * @brief  Registra los atajos vigentes y rehace las acciones del menú.
+     */
+    private func shortcutsChanged() {
+        menu?.rebuildActions(store.preferences)
+        hotkeys.register(store.preferences.activeShortcuts().map { action, shortcut in
+            HotkeyBinding(id: action.rawValue, shortcut: shortcut, name: action.title) { [weak self] in
+                self?.run(action)
+            }
+        })
+        hotkeysUpdated()
+    }
+
+    /**
+     * @brief  Vuelve a mostrar los atajos con los nombres de la nueva distribución de teclado.
+     *
+     * Los atajos se registran por la posición física de la tecla, así que no
+     * hace falta volver a registrarlos: solo cambia cómo se muestran.
+     */
+    private func keyboardLayoutChanged() {
+        Log.lifecycle.info("Cambio de distribución de teclado")
+        store.keyboardLayoutChanged()
+        menu?.rebuildActions(store.preferences)
+        hotkeysUpdated()
+    }
+
+    /**
+     * @brief  Suspende los atajos globales mientras se graba uno nuevo, y los recupera al terminar.
+     *
+     * @param[in]  recording  true al empezar a grabar.
+     */
+    private func recordingChanged(_ recording: Bool) {
+        if recording {
+            hotkeys.unregisterAll()
+        } else {
+            hotkeys.reregister()
+            hotkeysUpdated()
+        }
+    }
+
+    /**
+     * @brief  Comunica al menú y a las preferencias qué atajos no se pudieron registrar.
+     */
+    private func hotkeysUpdated() {
+        store.failedActions = hotkeys.failedIDs
+        menu?.update(failedHotkeys: hotkeys.failed)
+    }
+
+    /**
+     * @brief  Activa o desactiva el ajuste al arrastrar.
      */
     private func toggleSnap() {
-        snap.isEnabled.toggle()
-        UserDefaults.standard.set(snap.isEnabled, forKey: snapDefaultsKey)
-        refreshOptions()
+        store.setSnapEnabled(!store.snapEnabled)
     }
 
     /**
      * @brief  Activa o desactiva la apertura al iniciar sesión.
      */
     private func toggleLogin() {
-        if let error = LoginItem.set(!LoginItem.isEnabled) {
+        if let error = store.setLoginEnabled(!store.loginEnabled) {
             let alert = NSAlert()
             alert.messageText = "No se pudo cambiar la apertura al iniciar sesión"
             alert.informativeText = error
@@ -90,8 +143,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
      * @brief  Refleja en el menú el estado de las opciones.
      */
     private func refreshOptions() {
-        menu?.update(snapEnabled: snap.isEnabled, loginEnabled: LoginItem.isEnabled,
-                     loginPending: LoginItem.needsApproval)
+        store.refreshLogin()
+        menu?.update(snapEnabled: store.snapEnabled, loginEnabled: store.loginEnabled,
+                     loginPending: store.loginPending)
     }
 
     /**
@@ -121,8 +175,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
      */
     private func systemEvent(_ event: String) {
         Log.lifecycle.info("Evento del sistema: \(event)")
-        hotkeys.reregister()
-        menu?.update(failedHotkeys: hotkeys.failed)
+        if store.recordingAction == nil {
+            hotkeys.reregister()
+            hotkeysUpdated()
+        }
         Task { [weak self, wakeCheckDelay] in
             try? await Task.sleep(for: wakeCheckDelay)
             self?.health.check()
