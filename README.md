@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img alt="Versión 0.0.1" src="https://img.shields.io/badge/versi%C3%B3n-0.0.1-f3e5ab?style=flat-square&labelColor=1c3f6e">
+  <img alt="Versión 0.0.2" src="https://img.shields.io/badge/versi%C3%B3n-0.0.2-f3e5ab?style=flat-square&labelColor=1c3f6e">
   <img alt="macOS 26" src="https://img.shields.io/badge/macOS-26-f3e5ab?style=flat-square&labelColor=1c3f6e&logo=apple&logoColor=efebe4">
   <img alt="Swift 6" src="https://img.shields.io/badge/Swift-6-f3e5ab?style=flat-square&labelColor=1c3f6e&logo=swift&logoColor=efebe4">
   <img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-f3e5ab?style=flat-square&labelColor=1c3f6e">
@@ -102,8 +102,10 @@ Concede a toc el permiso de Accesibilidad cuando te lo pida. Para que se abra al
 | `Sources/toc` | La app: Accesibilidad, Apple Events, atajos, arrastre, menú y ciclo de vida. |
 | `Tests/TocCoreTests` | Tests de `TocCore`. Se ejecutan con `swift test`. |
 | `tools/toc-probe` | Sonda de diagnóstico de Accesibilidad. |
-| `scripts` | Empaquetado y firma (`build-app.sh`) y generación del icono (`make-icon.swift`). |
+| `scripts` | Compilación y firma (`build-app.sh`), empaquetado de versiones para GitHub (`package-release.sh`) y generación del icono (`make-icon.swift`). |
 | `docs` | [Notas de desarrollo](docs/notas-desarrollo.md). |
+
+Para publicar una versión, `./scripts/package-release.sh` compila toc, la comprime en `dist/toc-X.Y.Z.zip` desde una copia limpia (iCloud añade atributos que rompen la firma), comprueba la firma tras descomprimirla y guarda la suma SHA-256. No publica nada: al terminar muestra la orden `gh release create` para hacerlo.
 
 ## Licencia
 
