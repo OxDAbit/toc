@@ -67,8 +67,6 @@ En algunos Mac con macOS 26, al salir del reposo, macOS deja de dar acceso a las
 - Finder, Safari, Ajustes del Sistema y las demás apps scriptables se siguen moviendo mediante Apple Events.
 - Para el resto, toc te dice cómo recuperarlo: reiniciar el Mac, porque cerrar sesión no basta.
 
-Si quieres investigarlo, «Copiar diagnóstico» en el menú de toc te da un informe con lo que ve macOS. Para un análisis más a fondo está [`toc-probe`](tools/toc-probe/README.md), la sonda de diagnóstico con la que se estudió el fallo.
-
 ## Instalar toc
 
 ### Descarga
@@ -111,7 +109,16 @@ Para publicar una versión, `./scripts/package-release.sh` compila toc, la compr
 
 El código está bajo licencia [MIT](LICENSE): puedes usarlo, modificarlo y redistribuirlo manteniendo el aviso de copyright.
 
-Quedan fuera de esa licencia el nombre e isotipo de **0xDA** bit y el nombre, logo e iconos de toc (`assets/oxdabit.png`, `assets/logo.svg`, `assets/logo-mono.svg`, `assets/logo-silueta-claro.svg`, `assets/logo-silueta-oscuro.svg`, `assets/icon.png` y `Resources/toc.icns`). Si publicas una versión modificada, usa tu propio nombre y tus propios gráficos.
+Quedan fuera de esa licencia el nombre e isotipo de **0xDA** bit y el nombre, logo e iconos de toc:
+- `assets/oxdabit.png`
+- `assets/logo.svg`
+- `assets/logo-mono.svg`
+- `assets/logo-silueta-claro.svg`
+- `assets/logo-silueta-oscuro.svg`
+- `assets/icon.png`
+- `Resources/toc.icns`)
+
+Si publicas una versión modificada, usa tu propio nombre y tus propios gráficos.
 
 ---
 
