@@ -1,8 +1,6 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-silueta-oscuro.svg">
-    <img src="assets/logo-silueta-claro.svg" alt="Logo de toc" width="128" height="128">
-  </picture>
+  <img src="assets/logo-silueta-claro.svg#gh-light-mode-only" alt="Logo de toc" width="128" height="128">
+  <img src="assets/logo-silueta-oscuro.svg#gh-dark-mode-only" alt="Logo de toc" width="128" height="128">
 </p>
 
 <h1 align="center">toc</h1>
