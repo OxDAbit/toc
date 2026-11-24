@@ -23,7 +23,9 @@
   <a href="https://oxdabit.com/toc/"><b>oxdabit.com/toc</b></a>
 </p>
 
-toc vive en la barra de menús de tu Mac y coloca la ventana activa en mitades, tercios o cuartos de la pantalla con un atajo de teclado, o arrastrándola hasta un borde. Funciona en macOS 26 o posterior, en Mac con Intel o Apple Silicon.
+`toc` vive en la barra de menús de tu Mac y coloca la ventana activa dónde tú quieras! ya sea una división de la ventana en mitades, tercios o cuartos de la pantalla con un atajo de teclado, o arrastrándola hasta un borde.
+
+Funciona en macOS 26 o posterior, en Mac con Intel o Apple Silicon.
 
 ## Veinte posiciones, cada una con su atajo
 
