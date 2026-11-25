@@ -4,7 +4,7 @@ Name:     Sources/toc/LoginItem.swift
 Purpose:  Activa o desactiva que toc se abra al iniciar sesión, con
           SMAppService (aparece en Ajustes del Sistema → General → Ítems de
           inicio de sesión).
-Version:  v0.0.1
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ enum LoginItem {
             }
             return nil
         } catch {
-            Log.lifecycle.error("Ítem de inicio de sesión: \(error.localizedDescription)")
+            Log.lifecycle.error("Ítem de inicio de sesión: \(error.localizedDescription, privacy: .public)")
             return error.localizedDescription
         }
     }

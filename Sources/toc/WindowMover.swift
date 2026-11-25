@@ -5,8 +5,9 @@ Purpose:  Orquesta cada acción: localiza la ventana activa, elige la pantalla,
           calcula el destino con LayoutEngine y lo aplica por Accesibilidad.
           Si AX falla (por ejemplo, tras el reposo) y la app es scriptable,
           recurre a Apple Events. Guarda el historial para «Restaurar» y
-          lleva ventanas a la pantalla siguiente o anterior.
-Version:  v0.0.2
+          lleva ventanas a la pantalla siguiente o anterior. Nunca espera la
+          ventana de permiso de Automatización: si falta, la pide aparte.
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -23,6 +24,15 @@ enum MoveOutcome {
     case notMoved(String)
     /// No se puede mover por el estado de Accesibilidad.
     case unavailable(AXHealth, String)
+    /// Solo se podría mover por Apple Events, pero falta el permiso de
+    /// Automatización (pendiente de responder o denegado).
+    case needsAutomation(app: String, denied: Bool)
+}
+
+/// Motivo por el que no hay ninguna vía para mover la ventana.
+private enum ResolveFailure: Error {
+    case ax(AXWindowFailure)
+    case automation(app: String, denied: Bool)
 }
 
 /// Pantalla en coordenadas de Accesibilidad (origen arriba a la izquierda).
@@ -72,14 +82,14 @@ final class WindowMover {
     private var history: [CGWindowID: CGRect] = [:]
 
     /**
-     * @brief  Ejecuta una acción sobre la ventana activa.
+     * @brief  Ejecuta una acción sobre la ventana activa de una app.
      *
      * @param[in]  action  Acción a ejecutar.
+     * @param[in]  app     App cuya ventana se mueve (la última activa que no es toc).
      * @return Resultado de la acción.
      */
-    func perform(_ action: WindowAction) -> MoveOutcome {
-        guard let app = NSWorkspace.shared.frontmostApplication,
-              app.processIdentifier != getpid() else {
+    func perform(_ action: WindowAction, on app: NSRunningApplication?) -> MoveOutcome {
+        guard let app, !app.isTerminated, app.processIdentifier != getpid() else {
             return .notMoved("no hay ninguna app activa")
         }
         let name = app.localizedName ?? "la app"
@@ -87,13 +97,15 @@ final class WindowMover {
         let candidates: [MovableWindow]
         switch resolve(app) {
         case .success(let windows): candidates = windows
-        case .failure(.permissionMissing):
+        case .failure(.ax(.permissionMissing)):
             return .unavailable(.permissionMissing, "toc no tiene permiso de Accesibilidad")
-        case .failure(.brokenTree):
+        case .failure(.ax(.brokenTree)):
             return .unavailable(.broken,
                                 "macOS ha dejado de dar acceso a las ventanas de \(name) y no es una app scriptable")
-        case .failure(let failure):
+        case .failure(.ax(let failure)):
             return .notMoved("\(name): \(failure)")
+        case .failure(.automation(let appName, let denied)):
+            return .needsAutomation(app: appName, denied: denied)
         }
 
         for window in candidates {
@@ -108,10 +120,10 @@ final class WindowMover {
             let result = window.apply(destination)
             if let result, abs(result.minX - destination.minX) <= 4, abs(result.minY - destination.minY) <= 4 {
                 if action == .restore, let id = window.id { history[id] = nil }
-                Log.mover.info("\(action.rawValue) en \(name) por \(window.via)")
+                Log.mover.notice("\(action.rawValue, privacy: .public) en \(name, privacy: .public) por \(window.via, privacy: .public)")
                 return .moved(via: window.via)
             }
-            Log.mover.error("\(window.via) no movió \(name) a \(destination.debugDescription); quedó en \(result?.debugDescription ?? "?")")
+            Log.mover.error("\(window.via, privacy: .public) no movió \(name, privacy: .public) a \(destination.debugDescription, privacy: .public); quedó en \(result?.debugDescription ?? "?", privacy: .public)")
         }
         return .notMoved("\(name) no ha aceptado la nueva posición")
     }
@@ -155,14 +167,16 @@ final class WindowMover {
     /**
      * @brief  Busca las vías disponibles para mover la ventana activa de una app.
      *
-     * Devuelve primero la vía de Accesibilidad y, si la app es scriptable,
-     * Apple Events como respaldo. Si AX está roto y la app no es scriptable,
-     * devuelve el fallo.
+     * Usa la vía de Accesibilidad y, si no da una ventana, Apple Events
+     * cuando la app es scriptable y toc tiene permiso de Automatización. El
+     * permiso se consulta sin esperar: si AX ha fallado y aún no se ha
+     * decidido, se pide en segundo plano y la acción se da por no hecha, en
+     * lugar de dejar a toc congelada ante la ventana de permiso de macOS.
      *
      * @param[in]  app  App activa.
      * @return Vías disponibles en orden de preferencia, o el motivo del fallo.
      */
-    private func resolve(_ app: NSRunningApplication) -> Result<[MovableWindow], AXWindowFailure> {
+    private func resolve(_ app: NSRunningApplication) -> Result<[MovableWindow], ResolveFailure> {
         let pid = app.processIdentifier
         var windows: [MovableWindow] = []
         var axFailure: AXWindowFailure?
@@ -181,18 +195,32 @@ final class WindowMover {
             axFailure = failure
         }
 
-        if case .permissionMissing = axFailure { return .failure(.permissionMissing) }
+        if case .permissionMissing = axFailure { return .failure(.ax(.permissionMissing)) }
 
-        if AppleEventsMover.isScriptable(app), let bundleID = app.bundleIdentifier,
-           let frame = AppleEventsMover.frame(bundleID: bundleID) {
-            let id = WindowServerService.frontWindow(pid: pid)?.id
-            windows.append(MovableWindow(id: id, frame: frame, via: "Apple Events") { target in
-                AppleEventsMover.setFrame(bundleID: bundleID, to: target)
-            })
+        // Apple Events solo hace falta si Accesibilidad no ha dado una ventana:
+        // así, en uso normal, no hay esperas ni peticiones de permiso.
+        if windows.isEmpty, AppleEventsMover.isScriptable(app), let bundleID = app.bundleIdentifier {
+            let name = app.localizedName ?? bundleID
+            switch AutomationService.status(bundleID: bundleID, ask: false) {
+            case .granted:
+                if let frame = AppleEventsMover.frame(bundleID: bundleID) {
+                    let id = WindowServerService.frontWindow(pid: pid)?.id
+                    windows.append(MovableWindow(id: id, frame: frame, via: "Apple Events") { target in
+                        AppleEventsMover.setFrame(bundleID: bundleID, to: target)
+                    })
+                }
+            case .notDetermined:
+                AutomationService.request([bundleID]) { _ in }
+                return .failure(.automation(app: name, denied: false))
+            case .denied:
+                return .failure(.automation(app: name, denied: true))
+            default:
+                break
+            }
         }
 
         if windows.isEmpty {
-            return .failure(axFailure ?? .noWindow(.noValue))
+            return .failure(.ax(axFailure ?? .noWindow(.noValue)))
         }
         return .success(windows)
     }

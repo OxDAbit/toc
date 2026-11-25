@@ -5,7 +5,7 @@ Purpose:  Acceso a las ventanas de otras apps mediante la API de
           Accesibilidad. Pide los elementos de nuevo en cada acción (nunca
           guarda referencias entre reposos), conserva el código de error de
           cada llamada y comprueba que la ventana se ha movido de verdad.
-Version:  v0.0.1
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ enum AXWindowService {
         let positionError = set(window, kAXPositionAttribute, originValue)
         set(window, kAXSizeAttribute, sizeValue)
         if positionError != .success {
-            Log.ax.error("Fallo al mover la ventana: AXError \(positionError.rawValue)")
+            Log.ax.error("Fallo al mover la ventana: AXError \(positionError.rawValue, privacy: .public)")
         }
         return frame(window)
     }
