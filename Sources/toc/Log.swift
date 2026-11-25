@@ -2,8 +2,10 @@
 -------------------------------------------------------------------------------
 Name:     Sources/toc/Log.swift
 Purpose:  Registros de toc en el log unificado de macOS (subsistema
-          com.oxdabit.toc), consultables con «log show» o Consola.
-Version:  v0.0.1
+          com.oxdabit.toc), consultables con «log show» o Consola. Los
+          eventos importantes van en nivel notice, que macOS guarda en disco,
+          y los textos se marcan como públicos para que se puedan leer.
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------

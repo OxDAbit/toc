@@ -4,7 +4,7 @@ Name:     Sources/toc/HealthMonitor.swift
 Purpose:  Comprueba el estado de Accesibilidad observando las apps con
           ventanas en pantalla, avisa cuando cambia y genera el informe de
           diagnóstico que se puede copiar desde el menú.
-Version:  v0.0.1
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ final class HealthMonitor {
         }
         let result = AXHealthDetector.evaluate(Array(observations))
         diagnostics = report(state: result, lines: lines)
-        Log.ax.info("Comprobación de Accesibilidad: \(String(describing: result))")
+        Log.ax.notice("Comprobación de Accesibilidad: \(String(describing: result), privacy: .public)")
         update(result)
     }
 

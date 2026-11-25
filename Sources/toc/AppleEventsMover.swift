@@ -4,7 +4,9 @@ Name:     Sources/toc/AppleEventsMover.swift
 Purpose:  Plan B sin Accesibilidad: mueve la ventana delantera de las apps
           scriptables (Finder, Safari, Ajustes…) mediante Apple Events. Es la
           única vía que sigue funcionando con el fallo de AX tras el reposo.
-Version:  v0.0.1
+          Cada orden tiene un tiempo máximo, para no dejar a toc congelada si
+          la app tarda en responder.
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -29,14 +31,18 @@ enum AppleEventsMover {
         return bundle.object(forInfoDictionaryKey: "OSAScriptingDefinition") != nil
     }
 
+    /// Tiempo máximo, en segundos, que se espera la respuesta de la app.
+    static let replyTimeout = 2
+
     /**
-     * @brief  Ejecuta un AppleScript.
+     * @brief  Ejecuta un AppleScript con un tiempo máximo de espera.
      *
-     * @param[in]  source  Código AppleScript.
+     * @param[in]  source  Código AppleScript (una orden).
      * @return Par con el resultado (o nil) y el mensaje de error (o nil).
      */
     static func run(_ source: String) -> (NSAppleEventDescriptor?, String?) {
-        guard let script = NSAppleScript(source: source) else { return (nil, "script no válido") }
+        let wrapped = "with timeout of \(replyTimeout) seconds\n\(source)\nend timeout"
+        guard let script = NSAppleScript(source: wrapped) else { return (nil, "script no válido") }
         var errorInfo: NSDictionary?
         let result = script.executeAndReturnError(&errorInfo)
         if let errorInfo {
@@ -56,7 +62,7 @@ enum AppleEventsMover {
     static func frame(bundleID: String) -> CGRect? {
         let (result, error) = run("tell application id \"\(bundleID)\" to get bounds of front window")
         guard let result, result.numberOfItems == 4 else {
-            Log.mover.error("Apple Events no lee los límites de \(bundleID): \(error ?? "?")")
+            Log.mover.error("Apple Events no lee los límites de \(bundleID, privacy: .public): \(error ?? "?", privacy: .public)")
             return nil
         }
         let v = (1...4).map { CGFloat(result.atIndex($0)?.int32Value ?? 0) }
@@ -76,7 +82,7 @@ enum AppleEventsMover {
             .joined(separator: ", ")
         let (_, error) = run("tell application id \"\(bundleID)\" to set bounds of front window to {\(bounds)}")
         if let error {
-            Log.mover.error("Apple Events no mueve \(bundleID): \(error)")
+            Log.mover.error("Apple Events no mueve \(bundleID, privacy: .public): \(error, privacy: .public)")
             return nil
         }
         return frame(bundleID: bundleID)

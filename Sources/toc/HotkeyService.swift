@@ -4,7 +4,7 @@ Name:     Sources/toc/HotkeyService.swift
 Purpose:  Atajos de teclado globales con Carbon (RegisterEventHotKey), que no
           necesitan leer todo el teclado y siguen funcionando con la Entrada
           Segura activa. Se vuelven a registrar al despertar del reposo.
-Version:  v0.0.2
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ final class HotkeyService {
         var spec = EventTypeSpec(eventClass: OSType(kEventClassKeyboard), eventKind: UInt32(kEventHotKeyPressed))
         let status = InstallEventHandler(GetApplicationEventTarget(), hotKeyHandler, 1, &spec, nil, &handlerRef)
         if status != noErr {
-            Log.hotkeys.error("No se pudo instalar el manejador de atajos: \(status)")
+            Log.hotkeys.error("No se pudo instalar el manejador de atajos: \(status, privacy: .public)")
         }
         HotkeyService.active = self
     }
@@ -76,10 +76,10 @@ final class HotkeyService {
             } else {
                 failed.append("\(binding.name) (\(KeyEquivalent.display(binding.shortcut)))")
                 failedIDs.insert(binding.id)
-                Log.hotkeys.error("Atajo no disponible \(KeyEquivalent.display(binding.shortcut)): \(status)")
+                Log.hotkeys.error("Atajo no disponible \(KeyEquivalent.display(binding.shortcut), privacy: .public): \(status, privacy: .public)")
             }
         }
-        Log.hotkeys.info("Atajos registrados: \(self.refs.count), fallidos: \(self.failed.count)")
+        Log.hotkeys.notice("Atajos registrados: \(self.refs.count), fallidos: \(self.failed.count)")
     }
 
     /**

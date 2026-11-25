@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img alt="Versión 0.0.2" src="https://img.shields.io/badge/versi%C3%B3n-0.0.2-f3e5ab?style=flat-square&labelColor=1c3f6e">
+  <img alt="Versión 0.0.3" src="https://img.shields.io/badge/versi%C3%B3n-0.0.3-f3e5ab?style=flat-square&labelColor=1c3f6e">
   <img alt="macOS 26" src="https://img.shields.io/badge/macOS-26-f3e5ab?style=flat-square&labelColor=1c3f6e&logo=apple&logoColor=efebe4">
   <img alt="Swift 6" src="https://img.shields.io/badge/Swift-6-f3e5ab?style=flat-square&labelColor=1c3f6e&logo=swift&logoColor=efebe4">
   <img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-f3e5ab?style=flat-square&labelColor=1c3f6e">
@@ -84,8 +84,10 @@ En algunos Mac con macOS 26, al salir del reposo, macOS deja de dar acceso a las
 
 - El Mac despierta y, a los tres segundos, toc comprueba que Accesibilidad responde.
 - Si macOS devuelve la app en lugar de sus ventanas, el icono de toc cambia a ⚠︎ y te explica qué ocurre.
-- Finder, Safari, Ajustes del Sistema y las demás apps scriptables se siguen moviendo mediante Apple Events.
+- Finder, Safari, Ajustes del Sistema y las demás apps scriptables se siguen moviendo mediante Apple Events. El menú te dice cuáles se pueden mover en ese momento.
 - Para el resto, toc te dice cómo recuperarlo: reiniciar el Mac, porque cerrar sesión no basta.
+
+Apple Events necesita el permiso de Automatización de macOS para cada app. Para no tener que darlo en mitad del fallo, usa **«Preparar el plan B…»** en el menú de toc con el Finder, Safari y tus apps habituales abiertas: macOS te pedirá el permiso una vez por app y quedará guardado.
 
 ## Instalar toc
 

@@ -5,7 +5,7 @@ Purpose:  Icono y menú de toc en la barra de menús: estado de Accesibilidad,
           acciones visibles con sus atajos (según las preferencias),
           opciones, preferencias, comprobación manual, copia del diagnóstico
           y salida.
-Version:  v0.0.2
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -34,6 +34,7 @@ final class StatusMenuController: NSObject {
     private let onToggleLogin: () -> Void
     private let onCheck: () -> Void
     private let onCopyDiagnostics: () -> Void
+    private let onPrepareFallback: () -> Void
     private let onPreferences: () -> Void
 
     /**
@@ -44,6 +45,7 @@ final class StatusMenuController: NSObject {
      * @param[in]  onToggleLogin      Se llama al activar o desactivar la apertura al iniciar sesión.
      * @param[in]  onCheck            Se llama al pedir una comprobación de Accesibilidad.
      * @param[in]  onCopyDiagnostics  Se llama al pedir el diagnóstico.
+     * @param[in]  onPrepareFallback  Se llama al preparar el plan B (permisos de Automatización).
      * @param[in]  onPreferences      Se llama al abrir las preferencias.
      */
     init(onAction: @escaping (WindowAction) -> Void,
@@ -51,12 +53,14 @@ final class StatusMenuController: NSObject {
          onToggleLogin: @escaping () -> Void,
          onCheck: @escaping () -> Void,
          onCopyDiagnostics: @escaping () -> Void,
+         onPrepareFallback: @escaping () -> Void,
          onPreferences: @escaping () -> Void) {
         self.onAction = onAction
         self.onToggleSnap = onToggleSnap
         self.onToggleLogin = onToggleLogin
         self.onCheck = onCheck
         self.onCopyDiagnostics = onCopyDiagnostics
+        self.onPrepareFallback = onPrepareFallback
         self.onPreferences = onPreferences
         super.init()
         buildMenu()
@@ -95,6 +99,12 @@ final class StatusMenuController: NSObject {
         let check = NSMenuItem(title: "Comprobar Accesibilidad", action: #selector(checkSelected), keyEquivalent: "")
         check.target = self
         menu.addItem(check)
+        let fallback = NSMenuItem(title: "Preparar el plan B…", action: #selector(fallbackSelected),
+                                  keyEquivalent: "")
+        fallback.target = self
+        fallback.toolTip = "Pide ya el permiso de Automatización para mover Finder, Safari y otras apps "
+            + "scriptables si macOS pierde el acceso a las ventanas tras el reposo."
+        menu.addItem(fallback)
         let copy = NSMenuItem(title: "Copiar diagnóstico", action: #selector(copySelected), keyEquivalent: "")
         copy.target = self
         menu.addItem(copy)
@@ -138,8 +148,9 @@ final class StatusMenuController: NSObject {
      * @brief  Actualiza el icono y la línea de estado según la salud de Accesibilidad.
      *
      * @param[in]  health  Estado actual.
+     * @param[in]  movable  Apps que se pueden mover aún con el fallo (solo para .broken).
      */
-    func update(health: AXHealth) {
+    func update(health: AXHealth, movable: [String] = []) {
         let symbol: String
         statusDetail.isHidden = true
         switch health {
@@ -149,7 +160,9 @@ final class StatusMenuController: NSObject {
         case .broken:
             symbol = "exclamationmark.triangle"
             statusLine.title = "⚠︎ macOS ha perdido el acceso a las ventanas"
-            statusDetail.title = "Solo se pueden mover apps scriptables. Reinicia el Mac para recuperarlo."
+            statusDetail.title = movable.isEmpty
+                ? "Ninguna app abierta se puede mover. Reinicia el Mac para recuperarlo."
+                : "Se pueden mover: \(movable.joined(separator: ", ")). El resto, tras reiniciar el Mac."
             statusDetail.isHidden = false
         case .permissionMissing:
             symbol = "lock.slash"
@@ -227,6 +240,13 @@ final class StatusMenuController: NSObject {
      */
     @objc private func copySelected() {
         onCopyDiagnostics()
+    }
+
+    /**
+     * @brief  Atiende la petición de preparar el plan B.
+     */
+    @objc private func fallbackSelected() {
+        onPrepareFallback()
     }
 
     /**

@@ -4,7 +4,7 @@
 Name:     Resources/Info.plist
 Purpose:  Info.plist de toc.app. scripts/build-app.sh lo copia al paquete.
           LSUIElement oculta toc del Dock (vive en la barra de menús).
-Version:  v0.0.1
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -29,9 +29,9 @@ Created:  20/11/2026
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.0.2</string>
+    <string>0.0.3</string>
     <key>CFBundleVersion</key>
-    <string>2</string>
+    <string>3</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.productivity</string>
     <key>LSMinimumSystemVersion</key>
