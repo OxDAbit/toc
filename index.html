@@ -4,7 +4,7 @@
 Name:     index.html
 Purpose:  Web de presentación de toc (castellano). Generada por
           tools/build.py: no se edita a mano.
-Version:  v0.0.2
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ Created:  20/11/2026
         <a class="button primary" href="https://github.com/OxDAbit/toc/releases">Descargar toc</a>
         <a class="button ghost" href="#compilar">Compilar desde el código</a>
       </p>
-      <p class="requirements">Para macOS 26 o posterior, en Mac con Intel o Apple Silicon. Versión 0.0.2.</p>
+      <p class="requirements">Para macOS 26 o posterior, en Mac con Intel o Apple Silicon. Versión 0.0.3.</p>
     </div>
       </div>
     </div>
@@ -144,8 +144,8 @@ Created:  20/11/2026
       <h2>No se queda callada después del reposo</h2>
       <p>En algunos Mac con macOS 26, al salir del reposo, macOS deja de dar acceso a las ventanas a las apps de Accesibilidad. Los gestores de ventanas dejan de responder sin explicar por qué, y solo se arregla reiniciando. toc nació para no quedarse callada cuando pasa.</p>
     </div>
-    <ol class="steps"><li>El Mac despierta y, a los tres segundos, toc comprueba que Accesibilidad responde.</li><li>Si macOS devuelve la app en lugar de sus ventanas, el icono de toc cambia a ⚠︎ y te explica qué ocurre.</li><li>Finder, Safari, Ajustes del Sistema y las demás apps scriptables se siguen moviendo mediante Apple Events.</li><li>Para el resto, toc te dice cómo recuperarlo: reiniciar el Mac, porque cerrar sesión no basta.</li></ol>
-    <p class="note">Si quieres investigarlo, «Copiar diagnóstico» en el menú de toc te da un informe con lo que ve macOS.</p>
+    <ol class="steps"><li>El Mac despierta y, a los tres segundos, toc comprueba que Accesibilidad responde.</li><li>Si macOS devuelve la app en lugar de sus ventanas, el icono de toc cambia a ⚠︎ y te explica qué ocurre.</li><li>Finder, Safari, Ajustes del Sistema y las demás apps scriptables se siguen moviendo mediante Apple Events. El menú te dice cuáles se pueden mover en ese momento.</li><li>Para el resto, toc te dice cómo recuperarlo: reiniciar el Mac, porque cerrar sesión no basta.</li></ol>
+    <p class="note">Para que el plan B funcione sin esperas, usa «Preparar el plan B…» en el menú de toc con tus apps habituales abiertas: macOS te pedirá el permiso de Automatización una vez por app. Y si quieres investigarlo, «Copiar diagnóstico» te da un informe con lo que ve macOS.</p>
   </section>
 
   <section id="instalar" class="section">
@@ -171,7 +171,7 @@ Created:  20/11/2026
 </main>
 
 <footer class="footer">
-  <p class="meta">toc v0.0.2 with ❤️ by 0xDA_bit<br><a href="https://github.com/OxDAbit/toc">Código en GitHub</a></p>
+  <p class="meta">toc v0.0.3 with ❤️ by 0xDA_bit<br><a href="https://github.com/OxDAbit/toc">Código en GitHub</a></p>
   <a class="brand-mark" href="https://oxdabit.com"><img src="assets/oxdabit.svg" alt="Isotipo de 0xDA bit" width="56" height="56"></a>
   <p class="brand"><b>0xDA</b> bit · <i>Del boceto al plato</i></p>
   <p class="links"><a href="https://oxdabit.com">oxdabit.com</a> · <a href="https://www.youtube.com/@0xDAbitLabs">YouTube</a> · <a href="https://github.com/OxDAbit">GitHub</a> · <a href="https://x.com/0xDA_bit">X</a> · <a href="https://www.instagram.com/oxdabitlabs/">Instagram</a></p>

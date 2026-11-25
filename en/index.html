@@ -4,7 +4,7 @@
 Name:     en/index.html
 Purpose:  Web de presentación de toc (inglés). Generada por
           tools/build.py: no se edita a mano.
-Version:  v0.0.2
+Version:  v0.0.3
 Author:   David Alvarez Medina aka 0xDA_bit
 Created:  20/11/2026
 -------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ Created:  20/11/2026
         <a class="button primary" href="https://github.com/OxDAbit/toc/releases">Download toc</a>
         <a class="button ghost" href="#compilar">Build from source</a>
       </p>
-      <p class="requirements">For macOS 26 or later, on Intel and Apple silicon Macs. Version 0.0.2.</p>
+      <p class="requirements">For macOS 26 or later, on Intel and Apple silicon Macs. Version 0.0.3.</p>
     </div>
       </div>
     </div>
@@ -144,8 +144,8 @@ Created:  20/11/2026
       <h2>It doesn't go quiet after sleep</h2>
       <p>On some Macs running macOS 26, after waking from sleep, macOS stops giving Accessibility apps access to windows. Window managers stop responding without saying why, and only a restart fixes it. toc was built to speak up when that happens.</p>
     </div>
-    <ol class="steps"><li>Your Mac wakes up and, three seconds later, toc checks that Accessibility responds.</li><li>If macOS returns the app instead of its windows, toc&#x27;s icon changes to ⚠︎ and explains what happened.</li><li>Finder, Safari, System Settings and other scriptable apps keep moving through Apple Events.</li><li>For everything else, toc tells you how to recover: restart your Mac, because logging out is not enough.</li></ol>
-    <p class="note">If you want to dig in, “Copy diagnostics” in toc&#x27;s menu gives you a report of what macOS sees.</p>
+    <ol class="steps"><li>Your Mac wakes up and, three seconds later, toc checks that Accessibility responds.</li><li>If macOS returns the app instead of its windows, toc&#x27;s icon changes to ⚠︎ and explains what happened.</li><li>Finder, Safari, System Settings and other scriptable apps keep moving through Apple Events. The menu tells you which ones can move right now.</li><li>For everything else, toc tells you how to recover: restart your Mac, because logging out is not enough.</li></ol>
+    <p class="note">So the fallback works without waiting, use “Prepare fallback…” in toc&#x27;s menu with your usual apps open: macOS will ask for the Automation permission once per app. And if you want to dig in, “Copy diagnostics” gives you a report of what macOS sees.</p>
   </section>
 
   <section id="instalar" class="section">
@@ -171,7 +171,7 @@ Created:  20/11/2026
 </main>
 
 <footer class="footer">
-  <p class="meta">toc v0.0.2 with ❤️ by 0xDA_bit<br><a href="https://github.com/OxDAbit/toc">Code on GitHub</a></p>
+  <p class="meta">toc v0.0.3 with ❤️ by 0xDA_bit<br><a href="https://github.com/OxDAbit/toc">Code on GitHub</a></p>
   <a class="brand-mark" href="https://oxdabit.com"><img src="../assets/oxdabit.svg" alt="Isotipo de 0xDA bit" width="56" height="56"></a>
   <p class="brand"><b>0xDA</b> bit · <i>Del boceto al plato</i></p>
   <p class="links"><a href="https://oxdabit.com">oxdabit.com</a> · <a href="https://www.youtube.com/@0xDAbitLabs">YouTube</a> · <a href="https://github.com/OxDAbit">GitHub</a> · <a href="https://x.com/0xDA_bit">X</a> · <a href="https://www.instagram.com/oxdabitlabs/">Instagram</a></p>

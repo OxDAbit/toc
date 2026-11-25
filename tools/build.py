@@ -4,7 +4,7 @@
 #           inglés (en/index.html) a partir de una única plantilla, con los
 #           iconos de cada acción calculados igual que en LayoutEngine.
 #           Uso: python3 tools/build.py (desde la raíz de la rama gh-pages).
-# Version:  v0.0.2
+# Version:  v0.0.3
 # Author:   David Alvarez Medina aka 0xDA_bit
 # Created:  20/11/2026
 # -------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO = "https://github.com/OxDAbit/toc"
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 
 # Acciones en el orden y los grupos del menú de toc, con su atajo por defecto.
 # Cada tupla: (id, grupo, atajo o None, nombre es, nombre en).
@@ -173,10 +173,13 @@ TEXT = {
         "sleep_steps": [
             "El Mac despierta y, a los tres segundos, toc comprueba que Accesibilidad responde.",
             "Si macOS devuelve la app en lugar de sus ventanas, el icono de toc cambia a ⚠︎ y te explica qué ocurre.",
-            "Finder, Safari, Ajustes del Sistema y las demás apps scriptables se siguen moviendo mediante Apple Events.",
+            "Finder, Safari, Ajustes del Sistema y las demás apps scriptables se siguen moviendo mediante Apple Events. "
+            "El menú te dice cuáles se pueden mover en ese momento.",
             "Para el resto, toc te dice cómo recuperarlo: reiniciar el Mac, porque cerrar sesión no basta.",
         ],
-        "sleep_diag": "Si quieres investigarlo, «Copiar diagnóstico» en el menú de toc te da un informe con lo que ve macOS.",
+        "sleep_diag": "Para que el plan B funcione sin esperas, usa «Preparar el plan B…» en el menú de toc con tus apps "
+                      "habituales abiertas: macOS te pedirá el permiso de Automatización una vez por app. Y si quieres "
+                      "investigarlo, «Copiar diagnóstico» te da un informe con lo que ve macOS.",
         "install_h2": "Instalar toc",
         "dl_h3": "Descarga",
         "dl_p": "Las versiones publicadas están en la página de versiones del repositorio en GitHub.",
@@ -240,10 +243,13 @@ TEXT = {
         "sleep_steps": [
             "Your Mac wakes up and, three seconds later, toc checks that Accessibility responds.",
             "If macOS returns the app instead of its windows, toc's icon changes to ⚠︎ and explains what happened.",
-            "Finder, Safari, System Settings and other scriptable apps keep moving through Apple Events.",
+            "Finder, Safari, System Settings and other scriptable apps keep moving through Apple Events. "
+            "The menu tells you which ones can move right now.",
             "For everything else, toc tells you how to recover: restart your Mac, because logging out is not enough.",
         ],
-        "sleep_diag": "If you want to dig in, “Copy diagnostics” in toc's menu gives you a report of what macOS sees.",
+        "sleep_diag": "So the fallback works without waiting, use “Prepare fallback…” in toc's menu with your usual apps "
+                      "open: macOS will ask for the Automation permission once per app. And if you want to dig in, "
+                      "“Copy diagnostics” gives you a report of what macOS sees.",
         "install_h2": "Install toc",
         "dl_h3": "Download",
         "dl_p": "Published versions are on the repository's releases page on GitHub.",
